@@ -1,6 +1,8 @@
-import { Op, Sequelize } from "sequelize";
+import { Op, Sequelize } from 'sequelize';
 
-const { MYSQL_PASSWORD, MYSQL_USER, MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT } = process.env
+const {
+  MYSQL_PASSWORD, MYSQL_USER, MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT,
+} = process.env;
 
 const operatorsAliases = {
   $eq: Op.eq,
@@ -37,7 +39,7 @@ const operatorsAliases = {
   $all: Op.all,
   $values: Op.values,
   $col: Op.col,
-}
+};
 
 const sequelize = new Sequelize(MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, {
   host: MYSQL_HOST,

@@ -12,6 +12,8 @@ export default function authorization(req, res, next) {
     try {
         const {path, method} = req;
 
+       console.log(req.url,req.path,req.query,method,8989)
+
         if (method === 'OPTIONS' || EXCLUDE.includes(path)) {
             next();
             return;

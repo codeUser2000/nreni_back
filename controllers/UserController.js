@@ -3,7 +3,7 @@ import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 
-const {JWT_SECRET} = process.env;
+// const {JWT_SECRET} = process.env;
 
 class UserController {
     static register = async (req, res, next) => {

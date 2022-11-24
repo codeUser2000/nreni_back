@@ -1,11 +1,11 @@
-import createError from "http-errors";
-import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import indexRouter from "./routes/index";
-import headers from "./middlewares/headers";
-import authorization from "./middlewares/authorization";
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import indexRouter from './routes/index';
+import headers from './middlewares/headers';
+import authorization from './middlewares/authorization';
 
 const app = express();
 
@@ -23,6 +23,7 @@ app.use((req, res, next) => {
   next(createError(404));
 });
 
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
