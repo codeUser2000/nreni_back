@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3edec8c2-0ed7-4221-9054-24d5f9818882" name="Changes" comment="" />
+    <list default="true" id="3edec8c2-0ed7-4221-9054-24d5f9818882" name="Changes" comment="Changes debug deleteing">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/ProductsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ProductsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/UserController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/authorization.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authorization.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/validate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Categories.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Categories.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Products.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/products.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/products.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/schema/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/Email.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/Email.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/Utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/Utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/sequelize.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/sequelize.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,10 +39,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Hfxk5Ufl8patqVTwaNOd4tzQxZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -34,13 +57,15 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="16.16.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="16.18.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../nodeClass/chat-v0.1/back/models/Users.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../avartakan/avartakan_react" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\PhpStorm 2021.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -69,19 +94,38 @@
       <workItem from="1669031487858" duration="12110000" />
       <workItem from="1669102289031" duration="5506000" />
       <workItem from="1669214225464" duration="6154000" />
-      <workItem from="1669221180852" duration="2560000" />
+      <workItem from="1669221180852" duration="7858000" />
+      <workItem from="1669291409815" duration="204000" />
+      <workItem from="1669291668039" duration="2429000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changes" />
+    <MESSAGE value="Changes debug deleteing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes debug deleteing" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/services/Email.js</url>
-          <line>16</line>
+          <line>17</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
