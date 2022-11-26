@@ -5,7 +5,6 @@ const EXCLUDE = [
     '/users/login',
     '/users/register',
 ]
-const {JWT_SECRET} = process.env;
 
 export default function authorization(req, res, next) {
     try {
