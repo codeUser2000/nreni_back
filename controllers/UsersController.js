@@ -4,7 +4,7 @@ import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 
 
-class UserController {
+class UsersController {
     static register = async (req, res, next) => {
         try {
             const {
@@ -79,4 +79,4 @@ class UserController {
 
 }
 
-export default UserController
+export default UsersController

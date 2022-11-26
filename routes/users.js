@@ -1,12 +1,12 @@
 import express from 'express';
-import UserController from '../controllers/UserController';
+import UsersController from '../controllers/UsersController';
 import validate from '../middlewares/validate';
 import { usersRegisterSchema } from '../schema/users';
 
 const router = express.Router();
 
-router.post('/register', validate(usersRegisterSchema), UserController.register);
-router.get('/confirm', UserController.confirm);
-router.post('/login', UserController.login);
+router.post('/register', validate(usersRegisterSchema), UsersController.register);
+router.get('/confirm', UsersController.confirm);
+router.post('/login', UsersController.login);
 
 export default router;
