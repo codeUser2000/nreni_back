@@ -6,23 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3edec8c2-0ed7-4221-9054-24d5f9818882" name="Changes" comment="Changes debug deleteing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/ProductsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ProductsController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/UserController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/authorization.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authorization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/validate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Categories.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Categories.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Products.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/products.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/products.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schema/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/schema/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/Email.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/Email.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/Utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/Utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/sequelize.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/sequelize.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +40,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="16.16.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="16.18.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../avartakan/avartakan_react" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -65,7 +48,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\PhpStorm 2021.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -96,8 +79,24 @@
       <workItem from="1669214225464" duration="6154000" />
       <workItem from="1669221180852" duration="7858000" />
       <workItem from="1669291409815" duration="204000" />
-      <workItem from="1669291668039" duration="2429000" />
+      <workItem from="1669291668039" duration="4504000" />
+      <workItem from="1669467055767" duration="30000" />
     </task>
+    <task id="LOCAL-00001" summary="Changes debug deleteing">
+      <created>1669299117393</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669299117393</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Changes debug deleteing">
+      <created>1669299148972</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669299148972</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

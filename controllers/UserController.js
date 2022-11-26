@@ -8,7 +8,6 @@ import Email from "../services/Email";
 class UserController {
     static register = async (req, res, next) => {
         try {
-            const {status} = req.query;
             const {
                 firstName, lastName, birthYear, email, password,
                 redirectUrl = 'http://localhost:4000/users/confirm'
