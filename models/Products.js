@@ -36,7 +36,7 @@ Products.init({
     allowNull: false,
   },
   type: {
-    type: DataTypes.ENUM('parent', 'null', 'parentId'),
+    type: DataTypes.INTEGER.UNSIGNED,
   },
 }, {
   sequelize,
