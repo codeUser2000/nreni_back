@@ -12,16 +12,18 @@ class UserController {
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
+
             const confirmToken = uuidV4();
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
             const user = await Users.create({
-                firstName, lastName, birthYear, email, password, confirmToken
+                firstName, lastName, birthYear, email, password,
             });
 
             res.json({
                 status: 'ok',
+                confirmToken,
                 user,
             });
 
@@ -33,25 +35,15 @@ class UserController {
     static confirm = async (req, res, next) => {
         try {
             const {email, token} = req.query;
-            console.log(req.query, 9999)
-            const user = await Users.findOne({
-                where: {email}
-            });
+
+            const user = await Users.get(email);
 
             if (user.confirmToken !== token) {
                 throw HttpError(403);
             }
 
-            const data = Users.update(
-                {
-                    status: 'active',
-                    confirmToken: null,
-                },
-                {
-                    where: {email},
-                }
-            );
-            console.log(data)
+            await Users.activate(email);
+
 
             res.json({
                 status: 'ok',
