@@ -3,11 +3,11 @@ import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 
-// const {JWT_SECRET} = process.env;
 
 class UserController {
     static register = async (req, res, next) => {
         try {
+            console.log('hello!!!!!!!!')
             const {
                 firstName, lastName, birthYear, email, password,
                 redirectUrl = 'http://localhost:4000/users/confirm'
@@ -18,7 +18,7 @@ class UserController {
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
             const user = await Users.create({
-                firstName, lastName, birthYear, email, password,confirmToken
+                firstName, lastName, birthYear, email, password, confirmToken
             });
 
             res.json({
@@ -34,9 +34,9 @@ class UserController {
     static confirm = async (req, res, next) => {
         try {
             const {email, token} = req.query;
-            console.log(req.query,9999)
+            console.log(req.query, 9999)
             const user = await Users.findOne({
-                where:{email}
+                where: {email}
             });
 
             if (user.confirmToken !== token) {
@@ -45,11 +45,11 @@ class UserController {
 
             const data = Users.update(
                 {
-                    status:'active',
-                    confirmToken:null,
+                    status: 'active',
+                    confirmToken: null,
                 },
                 {
-                    where: { email },
+                    where: {email},
                 }
             );
             console.log(data)
