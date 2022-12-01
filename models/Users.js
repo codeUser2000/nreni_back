@@ -32,6 +32,10 @@ Users.init({
         unique: 'email',
         allowNull: false,
     },
+    confirmToken: {
+        type: DataTypes.CHAR(36),
+        allowNull: true,
+    },
     password: {
         type: DataTypes.CHAR(32),
         allowNull: false,

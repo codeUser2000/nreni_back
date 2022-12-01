@@ -23,18 +23,18 @@ class UsersController {
             if(existUser){
                 throw HttpError(401, "User exists")
             }
-            const user = await Users.create({
-                firstName, lastName, birthYear, email, password,
-            });
-
             const confirmToken = uuidV4();
+
+            const user = await Users.create({
+                firstName, lastName, birthYear, email, password, confirmToken
+            });
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
-            res.json({
-                status: 'ok',
-                user,
-            });
+           res.json({
+               status:'ok',
+               user
+           })
 
         } catch (e) {
             next(e);
@@ -45,13 +45,23 @@ class UsersController {
         try {
             const {email, token} = req.query;
 
-            const user = await Users.get(email);
+            const user = await Users.findOne({
+                where:{email}
+            });
 
             if (user.confirmToken !== token) {
                 throw HttpError(403);
             }
 
-            await Users.activate(email);
+            await Users.update(
+                {
+                    confirmToken: null,
+                    status:'active'
+                },
+                {
+                    where: { email },
+                }
+            );
 
 
             res.json({
