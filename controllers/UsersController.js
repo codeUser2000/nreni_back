@@ -17,18 +17,25 @@ class UsersController {
 
             console.log(req.body)
 
-            const confirmToken = uuidV4();
 
-            //await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
+            const existUser = await Users.findOne({
+                where:{email}
+            })
+
+            if(existUser){
+                throw HttpError(401, "User exists")
+            }
             const user = await Users.create({
                 firstName, lastName, birthYear, email, password,
             });
 
-            //const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+            const confirmToken = uuidV4();
+
+            await Email.sendActivationEmail(email, confirmToken, redirectUrl);
+
             res.json({
                 status: 'ok',
-                //token,
                 user,
             });
 
@@ -72,10 +79,13 @@ class UsersController {
             }
 
 
+            const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+
             res.json({
                 status: 'ok',
-                user,
-            })
+                token,
+                user
+            });
 
         } catch (e) {
             next(e)
