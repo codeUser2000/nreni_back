@@ -13,6 +13,7 @@ export default function authorization(req, res, next) {
         const {path, method} = req;
 
         if (method === 'OPTIONS' || EXCLUDE.includes(path)) {
+            console.log(path,7)
             next();
             return;
         }

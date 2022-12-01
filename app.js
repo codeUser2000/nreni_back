@@ -1,11 +1,11 @@
-import createError from 'http-errors';
-import express from 'express';
-import path from 'path';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
-import indexRouter from './routes/index';
-import headers from './middlewares/headers';
-import authorization from './middlewares/authorization';
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import indexRouter from "./routes/index";
+import headers from "./middlewares/headers";
+import authorization from "./middlewares/authorization";
 
 const app = express();
 
@@ -16,6 +16,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(headers);
 app.use(authorization);
+
+
+export default app;
+
 const cors = require('cors');
 const corsOptions ={
   origin:'http://localhost:3000',
@@ -24,12 +28,10 @@ const corsOptions ={
 }
 app.use(cors(corsOptions));
 app.use('/', indexRouter);
-
 app.use((req, res, next) => {
   next(createError(404));
 });
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
@@ -39,5 +41,3 @@ app.use((err, req, res, next) => {
     errors: err.errors,
   });
 });
-
-export default app;
