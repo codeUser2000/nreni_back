@@ -2,9 +2,11 @@ import {Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
+import jwt from "jsonwebtoken";
 
-
+const {JWT_SECRET} = process.env;
 class UsersController {
+
     static register = async (req, res, next) => {
         try {
             const {
@@ -13,17 +15,20 @@ class UsersController {
             } = req.body;
 
 
+            console.log(req.body)
+
             const confirmToken = uuidV4();
 
-            await Email.sendActivationEmail(email, confirmToken, redirectUrl);
+            //await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
             const user = await Users.create({
                 firstName, lastName, birthYear, email, password,
             });
 
+            //const token = jwt.sign({ userId: user.id }, JWT_SECRET);
             res.json({
                 status: 'ok',
-                confirmToken,
+                //token,
                 user,
             });
 

@@ -7,7 +7,6 @@ export default function headers(req, res, next) {
       res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization');
       // res.setHeader('Access-Control-Allow-Credentials', true);
     }
-
     next();
   } catch (e) {
     next(e);

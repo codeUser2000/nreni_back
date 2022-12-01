@@ -2,11 +2,11 @@ import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
     secure: true,
-    host: "smtp.yandex.com",
+    host: "smtp.gmail.com",
     port: 465,
     auth: {
-        user: 'tigran@ghost-services.com',
-        pass: 'dceszswwpzbbqzcm',
+        user: 'aidahakobyanff',
+        pass: 'frozenkyanq2000.',
     },
 });
 
@@ -14,7 +14,7 @@ class Email {
 
     static sendActivationEmail(email, token, frontUrl) {
         return transporter.sendMail({
-            from: '"Nreni" <tigran@ghost-services.com>',
+            from: '"Nreni" <aidahakobyanff@gmail.com>',
             to: email,
             subject: 'Complete Registration',
             html: `<a href="${frontUrl}?email=${email}&token=${token}">Complete Registration</a>`

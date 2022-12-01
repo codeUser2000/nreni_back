@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
 import HttpError from "http-errors";
 
+const {JWT_SECRET} = process.env;
 const EXCLUDE = [
     '/users/login',
     '/users/register',
-]
+    '/users/confirm',
+];
 
 export default function authorization(req, res, next) {
     try {
@@ -17,14 +19,21 @@ export default function authorization(req, res, next) {
 
         const token = req.headers.authorization || req.query.token || '';
 
-        const {email} = jwt.verify(token.replace('Bearer ', ''), '#$%EDRTYFGHV');
+        let userId;
 
-        if (!email) {
+        try {
+            const data = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);
+
+            userId = data.userId;
+        } catch (e) {
+
+        }
+
+        if (!userId) {
             throw HttpError(401, 'Invalid token')
         }
 
-        req.email = email;
-
+        req.userId = userId;
         next();
     } catch (e) {
         next(e);
