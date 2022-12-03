@@ -24,7 +24,7 @@ Users.init({
         allowNull: false
     },
     birthYear: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
     },
     email: {

@@ -73,6 +73,19 @@ class UsersController {
         }
     }
 
+    static list = async (req, res, next) => {
+        try {
+
+            const user = await Users.findAll()
+
+            res.json({
+                status: 'ok',
+                user
+            })
+        } catch (e) {
+            next(e);
+        }
+    }
 
     static login = async (req, res, next) => {
         try {
@@ -85,7 +98,9 @@ class UsersController {
                 throw HttpError(403);
             }
 
-
+            if(user.status !== "active"){
+                throw HttpError(403, "You haven't confirmed your account");
+            }
             const token = jwt.sign({ userId: user.id }, JWT_SECRET);
 
             res.json({
