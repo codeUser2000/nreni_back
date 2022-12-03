@@ -3,6 +3,7 @@ import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 import jwt from "jsonwebtoken";
+import http from "http";
 
 const {JWT_SECRET} = process.env;
 class UsersController {
@@ -14,8 +15,6 @@ class UsersController {
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
-
-            console.log(req.body)
             const existUser = await Users.findOne({
                 where:{email}
             })
@@ -30,9 +29,10 @@ class UsersController {
             });
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
-
+            const token = jwt.sign({ userId: user.id }, JWT_SECRET);
            res.json({
                status:'ok',
+               token,
                user
            })
 
@@ -64,10 +64,8 @@ class UsersController {
             );
 
 
-            res.json({
-                status: 'ok',
-                email
-            })
+            res.write('<a href="http://localhost:3000/shop">Your account is successfully registered :) Click to go back</a>');
+            res.end()
         } catch (e) {
             next(e);
         }
