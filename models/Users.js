@@ -33,7 +33,7 @@ Users.init({
         allowNull: false,
     },
     admin: {
-        type: DataTypes.ENUM,
+        type: DataTypes.ENUM('true', 'false'),
     },
     confirmToken: {
         type: DataTypes.CHAR(36),
