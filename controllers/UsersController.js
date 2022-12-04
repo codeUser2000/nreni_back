@@ -4,7 +4,7 @@ import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 import jwt from "jsonwebtoken";
 
-const {JWT_SECRET} = process.env;
+const {JWT_SECRET, FRONT_URL} = process.env;
 class UsersController {
 
     static register = async (req, res, next) => {
@@ -64,10 +64,8 @@ class UsersController {
             );
 
 
-            res.json({
-                status: 'ok',
-                email
-            })
+            res.write(`<a href="${FRONT_URL}login">Congrats :) now go and login</a>`)
+            res.end()
         } catch (e) {
             next(e);
         }
