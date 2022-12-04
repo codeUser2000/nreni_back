@@ -15,7 +15,6 @@ class UsersController {
             } = req.body;
 
 
-            console.log(req.body)
             const existUser = await Users.findOne({
                 where:{email}
             })

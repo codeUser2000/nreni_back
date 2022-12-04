@@ -32,6 +32,9 @@ Users.init({
         unique: 'email',
         allowNull: false,
     },
+    admin: {
+        type: DataTypes.ENUM,
+    },
     confirmToken: {
         type: DataTypes.CHAR(36),
         allowNull: true,

@@ -23,7 +23,6 @@ export default function authorization(req, res, next) {
 
         try {
             const data = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);
-
             userId = data.userId;
         } catch (e) {
 
