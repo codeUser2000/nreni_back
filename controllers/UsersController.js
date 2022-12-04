@@ -87,6 +87,30 @@ class UsersController {
         }
     }
 
+    static forgetPass = async (req, res, next) => {
+        try {
+            const {email} = req.body;
+            console.log(email)
+            const user = await Users.findOne({
+                where: {email}
+            });
+
+            if (!user)  {
+                throw HttpError(403, "We dont have such user");
+            }
+
+           await Email.sendDropPassword(email);
+
+            res.json({
+                status: 'ok',
+                status1: 'ok',
+               // email
+            })
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static login = async (req, res, next) => {
         try {
             const {email, password} = req.body;

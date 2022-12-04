@@ -22,12 +22,12 @@ class Email {
         })
     }
     static sendDropPassword(email) {
-        console.log(email)
+        console.log(email,6776)
         return transporter.sendMail({
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,
-            subject: 'Drop Email',
-            html: `<a href="${FRONT_URL}?email=${email}">Complete Registration</a>`
+            subject: 'Drop Password',
+            html: `<a href="${FRONT_URL}?email=${email}">Drop Password</a>`
         })
     }
 }
