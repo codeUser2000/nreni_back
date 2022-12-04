@@ -20,13 +20,13 @@ app.use(authorization);
 
 export default app;
 
-const cors = require('cors');
-const corsOptions ={
-  origin:'http://localhost:3000',
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200
-}
-app.use(cors(corsOptions));
+// const cors = require('cors');
+// const corsOptions ={
+//   origin:'http://localhost:3000',
+//   credentials:true,            //access-control-allow-credentials:true
+//   optionSuccessStatus:200
+// }
+// app.use(cors(corsOptions));
 app.use('/', indexRouter);
 app.use((req, res, next) => {
   next(createError(404));
