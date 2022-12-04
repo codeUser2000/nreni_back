@@ -6,6 +6,7 @@ const EXCLUDE = [
     '/users/login',
     '/users/register',
     '/users/confirm',
+    '/users/forget_pass',
 ];
 
 export default function authorization(req, res, next) {
