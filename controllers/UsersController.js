@@ -103,8 +103,7 @@ class UsersController {
 
             res.json({
                 status: 'ok',
-                status1: 'ok',
-               // email
+                email
             })
         } catch (e) {
             next(e);

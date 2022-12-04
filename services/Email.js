@@ -27,7 +27,7 @@ class Email {
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,
             subject: 'Drop Password',
-            html: `<a href="${FRONT_URL}?email=${email}">Drop Password</a>`
+            html: `<a href="${FRONT_URL}">Drop Password</a>`
         })
     }
 }
