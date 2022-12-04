@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-
+const { FRONT_URL } = process.env
 const transporter = nodemailer.createTransport({
     host: "smtp.yandex.com",
     secure:true,
@@ -19,6 +19,15 @@ class Email {
             to: email,
             subject: 'Complete Registration',
             html: `<a href="${frontUrl}?email=${email}&token=${token}">Complete Registration</a>`
+        })
+    }
+    static sendDropPassword(email) {
+        console.log(email)
+        return transporter.sendMail({
+            from: '"Nreni" <nreniShop@yandex.ru>',
+            to: email,
+            subject: 'Drop Email',
+            html: `<a href="${FRONT_URL}?email=${email}">Complete Registration</a>`
         })
     }
 }
