@@ -111,20 +111,6 @@ class UsersController {
         }
     }
 
-    static newPassWord = async (req, res, next) => {
-        try {
-            const {email} = req.body;
-
-            res.json({
-                status: 'ok',
-                email
-            });
-
-        } catch (e) {
-            next(e)
-        }
-    }
-
     static login = async (req, res, next) => {
         try {
             const {email, password} = req.body;
@@ -151,6 +137,7 @@ class UsersController {
             next(e)
         }
     }
+
 
 }
 
