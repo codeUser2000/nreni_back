@@ -14,8 +14,6 @@ class UsersController {
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
-
-            console.log(req.body)
             const existUser = await Users.findOne({
                 where:{email}
             })
