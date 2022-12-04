@@ -137,6 +137,36 @@ class UsersController {
         }
     }
 
+    static newPassword = async (req, res, next) => {
+        try {
+            const {email, password} = req.body;
+            const user = await Users.findOne({
+                where: {email}
+            });
+
+            if (!user) {
+                throw HttpError(403);
+            }
+
+            await Users.update(
+                {
+                    password
+                },
+                {
+                    where: { email },
+                }
+            );
+
+            res.json({
+                status: 'ok',
+                user
+            });
+
+        } catch (e) {
+            next(e)
+        }
+    }
+
 
 }
 
