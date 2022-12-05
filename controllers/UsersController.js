@@ -114,7 +114,7 @@ class UsersController {
             });
 
             if (!user || user.getDataValue('password') !== Users.passwordHash(password)) {
-                throw HttpError(403);
+                throw HttpError(403,"Password is wrong");
             }
 
             if(user.status !== "active"){
