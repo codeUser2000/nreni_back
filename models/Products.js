@@ -36,7 +36,8 @@ Products.init({
         allowNull: false,
     },
     type: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.ENUM('ring', 'bracelet', 'necklace', 'earring', 'collection'),
+        allowNull: false,
     },
 }, {
     sequelize,

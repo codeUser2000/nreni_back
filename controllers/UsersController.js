@@ -5,8 +5,8 @@ import Email from "../services/Email";
 import jwt from "jsonwebtoken";
 
 const {JWT_SECRET, FRONT_URL} = process.env;
-class UsersController {
 
+class UsersController {
     static register = async (req, res, next) => {
         try {
             const {
@@ -15,10 +15,10 @@ class UsersController {
             } = req.body;
 
             const existUser = await Users.findOne({
-                where:{email}
+                where: {email}
             })
 
-            if(existUser){
+            if (existUser) {
                 throw HttpError(401, "User exists")
             }
             const confirmToken = uuidV4();
@@ -29,10 +29,10 @@ class UsersController {
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
-           res.json({
-               status:'ok',
-               user
-           })
+            res.json({
+                status: 'ok',
+                user
+            })
 
         } catch (e) {
             next(e);
@@ -44,7 +44,7 @@ class UsersController {
             const {email, token} = req.query;
 
             const user = await Users.findOne({
-                where:{email}
+                where: {email}
             });
 
             if (user.confirmToken !== token) {
@@ -54,10 +54,10 @@ class UsersController {
             await Users.update(
                 {
                     confirmToken: null,
-                    status:'active'
+                    status: 'active'
                 },
                 {
-                    where: { email },
+                    where: {email},
                 }
             );
 
@@ -86,16 +86,15 @@ class UsersController {
     static forgetPass = async (req, res, next) => {
         try {
             const {email} = req.body;
-            console.log(email)
             const user = await Users.findOne({
                 where: {email}
             });
 
-            if (!user)  {
+            if (!user) {
                 throw HttpError(403, "We dont have such user");
             }
 
-           await Email.sendDropPassword(email);
+            await Email.sendDropPassword(email);
 
             res.json({
                 status: 'ok',
@@ -114,13 +113,13 @@ class UsersController {
             });
 
             if (!user || user.getDataValue('password') !== Users.passwordHash(password)) {
-                throw HttpError(403,"Password is wrong");
+                throw HttpError(403, "Password is wrong");
             }
 
-            if(user.status !== "active"){
+            if (user.status !== "active") {
                 throw HttpError(403, "You haven't confirmed your account");
             }
-            const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+            const token = jwt.sign({userId: user.id}, JWT_SECRET);
 
             res.json({
                 status: 'ok',
@@ -149,7 +148,7 @@ class UsersController {
                     password
                 },
                 {
-                    where: { email },
+                    where: {email},
                 }
             );
 
@@ -163,7 +162,30 @@ class UsersController {
         }
     }
 
+    static delete = async (req, res, next) => {
+        try {
+            const {email} = req.body;
 
+            const user = await Users.findOne({
+                where: {email}
+            });
+
+            if (!user) {
+                throw HttpError(403);
+            }
+
+            await Users.destroy({
+                user
+            })
+
+            res.json({
+                status: 'ok',
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default UsersController
