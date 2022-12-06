@@ -40,7 +40,7 @@ Users.init({
         allowNull: true,
     },
     phone: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.CHAR(50),
         allowNull: false,
         unique: 'phone',
     },
