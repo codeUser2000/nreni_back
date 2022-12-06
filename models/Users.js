@@ -33,11 +33,16 @@ Users.init({
         allowNull: false,
     },
     admin: {
-        type: DataTypes.ENUM('true', 'false'),
+        type: DataTypes.BOOLEAN,
     },
     confirmToken: {
         type: DataTypes.CHAR(36),
         allowNull: true,
+    },
+    phone: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        unique: 'phone',
     },
     password: {
         type: DataTypes.CHAR(32),

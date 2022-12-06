@@ -10,7 +10,7 @@ class UsersController {
     static register = async (req, res, next) => {
         try {
             const {
-                firstName, lastName, birthYear, email, password,
+                firstName, lastName, birthYear, email, password, phone,
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
@@ -24,7 +24,7 @@ class UsersController {
             const confirmToken = uuidV4();
 
             const user = await Users.create({
-                firstName, lastName, birthYear, email, password, confirmToken
+                firstName, lastName, birthYear, email, password, confirmToken, phone
             });
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
