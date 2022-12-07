@@ -1,5 +1,6 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
+import md5 from "md5";
 
 class Products extends Model {
 
@@ -35,10 +36,18 @@ Products.init({
         type: DataTypes.ENUM('available', 'not available'),
         allowNull: false,
     },
-    type: {
-        type: DataTypes.ENUM('ring', 'bracelet', 'necklace', 'earring', 'collection'),
-        allowNull: false,
-    },
+    avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        get() {
+            let avatar = this.getDataValue('avatar');
+            if (!avatar) {
+                const email = this.getDataValue('email').toLowerCase();
+                return  `https://www.gravatar.com/avatar/${md5(email)}?d=wavatar`;
+            }
+            return avatar
+        }
+    }
 
 }, {
     sequelize,
