@@ -174,9 +174,8 @@ class UsersController {
                 throw HttpError(403);
             }
 
-            await Users.destroy({
-                user
-            })
+
+            await user.destroy()
 
             res.json({
                 status: 'ok',
