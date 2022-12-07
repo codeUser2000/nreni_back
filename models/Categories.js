@@ -16,8 +16,8 @@ Categories.init({
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: true,
     },
-    title: {
-        type: DataTypes.TEXT,
+    type: {
+        type: DataTypes.ENUM('ring', 'bracelet', 'necklace', 'earring', 'collection'),
         allowNull: false,
     },
 }, {
