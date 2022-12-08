@@ -8,7 +8,6 @@ class ProductsController {
         try {
             const {name} = req.body;
 
-            const token = jwt.sign({userId: user.id}, JWT_SECRET);
             const category = await Categories.create({name});
 
 

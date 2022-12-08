@@ -8,6 +8,8 @@ const EXCLUDE = [
     '/users/confirm',
     '/users/forget',
     '/users/newPassword',
+    'products/categories',
+    'products/shop',
 ];
 
 export default function authorization(req, res, next) {

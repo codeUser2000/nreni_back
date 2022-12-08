@@ -43,12 +43,15 @@ Products.init({
             let avatar = this.getDataValue('avatar');
             if (!avatar) {
                 const email = this.getDataValue('email').toLowerCase();
-                return  `https://www.gravatar.com/avatar/${md5(email)}?d=wavatar`;
+                return `https://www.gravatar.com/avatar/${md5(email)}?d=wavatar`;
             }
             return avatar
         }
-    }
-
+    },
+    tags: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true,
+    },
 }, {
     sequelize,
     modelName: 'products',

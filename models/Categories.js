@@ -1,5 +1,6 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
+import Products from "./Products";
 
 class Categories extends Model {
 
@@ -12,10 +13,6 @@ Categories.init({
         autoIncrement: true,
         allowNull: false,
     },
-    parentId: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
-    },
     type: {
         type: DataTypes.ENUM('ring', 'bracelet', 'necklace', 'earring', 'collection'),
         allowNull: false,
@@ -26,4 +23,17 @@ Categories.init({
     tableName: 'categories',
 });
 
+Products.belongsTo(Categories, {
+    foreignKey: 'categoryId',
+    as: 'category',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+});
+
+Categories.hasMany(Products, {
+    foreignKey: 'categoryId',
+    as: 'product',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
 export default Categories;
