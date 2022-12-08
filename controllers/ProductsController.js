@@ -29,6 +29,29 @@ class ProductsController {
             next(e);
         }
     }
+    static getProducts = async (req, res, next) => {
+        try {
+            const {lang='en',page=1,limit=9} = req.query;
+            const product = await Products.findAll({
+                // include:[{
+                //     model:TranslateData,
+                //     as: 'translation',
+                //     // where:
+                // }],
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * +limit,
+                limit: +limit
+            });
+
+            res.json({
+                status: 'ok',
+                product,
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default ProductsController;
