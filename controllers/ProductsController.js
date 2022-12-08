@@ -16,13 +16,9 @@ class ProductsController {
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 
-
             const product = await Products.create({
                 title, description, categoryId, price, discount, shop, avatar
             });
-
-
-            console.log(product);
 
             res.json({
                 status: 'ok',
