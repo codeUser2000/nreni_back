@@ -1,9 +1,9 @@
 import express from 'express';
-import ProductsController from '../controllers/ProductsController';
+import uploader from '../middlewares/imgUploader';
+import ProductsController from "../controllers/ProductsController";
 
 const router = express.Router();
 
-router.get('/categories', ProductsController.categories);
-router.get('/shop', ProductsController.shop);
+router.post('/createProducts', uploader.single('avatar'), ProductsController.createProducts);
 
 export default router;

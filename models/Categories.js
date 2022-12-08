@@ -25,7 +25,7 @@ Categories.init({
 
 Products.belongsTo(Categories, {
     foreignKey: 'categoryId',
-    as: 'category',
+    as: 'categories',
     onUpdate: 'cascade',
     onDelete: 'cascade',
 });

@@ -1,33 +1,26 @@
-import {Categories, Products} from '../models';
-import jwt from "jsonwebtoken";
+import {Products} from '../models';
+import path from "path";
+import {v4 as uuidV4} from 'uuid';
+import imgPromise from "../services/imgPromise";
 
 
 class ProductsController {
 
-    static categories = async (req, res, next) => {
+    static createProducts = async (req, res, next) => {
         try {
-            const {name} = req.body;
+            const {title, description, categoryId, price, discount, shop} = req.body;
+            const {file} = req;
 
-            const category = await Categories.create({name});
+            const originalName = file.originalname.replace(/\..+$/, '.jpg');
 
+            const avatar = path.join('/img', uuidV4() + '-' + originalName);
+            await imgPromise('../public', file, avatar)
 
-            res.json({
-                status: 'ok',
-                category
-            })
-
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    static shop = async (req, res, next) => {
-        try {
-            const {title, description, categoryId, price, discount, shop, type} = req.body;
 
             const product = await Products.create({
-                title, description, categoryId, price, discount, shop, type
+                title, description, categoryId, price, discount, shop, avatar
             });
+
 
             console.log(product);
 
