@@ -9,11 +9,10 @@ class ProductsController {
     static createProducts = async (req, res, next) => {
         try {
             const {title, description, categoryId, price, discount, shop} = req.body;
-            const {lang = 'en', page = 1, limit = 20} = req.query;
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
-
+            console.log()
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 
@@ -21,6 +20,10 @@ class ProductsController {
                 title, description, categoryId, price, discount, shop, avatar
             });
 
+            res.json({
+                status: 'ok ',
+                product
+            })
         } catch (e) {
             next(e);
         }
