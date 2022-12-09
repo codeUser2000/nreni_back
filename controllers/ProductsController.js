@@ -9,6 +9,7 @@ class ProductsController {
     static createProducts = async (req, res, next) => {
         try {
             const {title, description, categoryId, price, discount, shop} = req.body;
+            const {lang = 'en', page = 1, limit = 20} = req.query;
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
@@ -20,21 +21,16 @@ class ProductsController {
                 title, description, categoryId, price, discount, shop, avatar
             });
 
-            res.json({
-                status: 'ok',
-                product,
-            });
-
         } catch (e) {
             next(e);
         }
     }
     static getProducts = async (req, res, next) => {
         try {
-            const {lang='en',page=1,limit=9} = req.query;
+            const {lang = 'en', page = 1, limit = 9} = req.query;
             const product = await Products.findAll({
-                include:[{
-                    model:Categories,
+                include: [{
+                    model: Categories,
                     as: 'categories',
                     // where:
                 }],
