@@ -47,10 +47,13 @@ class ProductsController {
                 offset: (+page - 1) * +limit,
                 limit: +limit
             });
+            const total = await Products.count();
 
             res.json({
                 status: 'ok',
                 product,
+                total,
+                totalPages: Math.ceil(total / limit)
             });
 
         } catch (e) {
