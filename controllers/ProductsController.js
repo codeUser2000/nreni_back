@@ -1,4 +1,4 @@
-import {Products} from '../models';
+import {Categories, Products} from '../models';
 import path from "path";
 import {v4 as uuidV4} from 'uuid';
 import imgPromise from "../services/imgPromise";
@@ -33,6 +33,11 @@ class ProductsController {
         try {
             const {lang='en',page=1,limit=9} = req.query;
             const product = await Products.findAll({
+                include:[{
+                    model:Categories,
+                    as: 'categories',
+                    // where:
+                }],
                 // include:[{
                 //     model:TranslateData,
                 //     as: 'translation',
