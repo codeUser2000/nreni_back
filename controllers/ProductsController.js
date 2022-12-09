@@ -12,7 +12,7 @@ class ProductsController {
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
-
+            console.log()
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 
@@ -21,20 +21,19 @@ class ProductsController {
             });
 
             res.json({
-                status: 'ok',
-                product,
-            });
-
+                status: 'ok ',
+                product
+            })
         } catch (e) {
             next(e);
         }
     }
     static getProducts = async (req, res, next) => {
         try {
-            const {lang='en',page=1,limit=9} = req.query;
+            const {lang = 'en', page = 1, limit = 9} = req.query;
             const product = await Products.findAll({
-                include:[{
-                    model:Categories,
+                include: [{
+                    model: Categories,
                     as: 'categories',
                     // where:
                 }],
