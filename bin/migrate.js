@@ -1,7 +1,7 @@
-import {Users, Categories, Products, Cart, CartItem} from "../models";
+import {Users, Categories, Products, Cart, CartItem, Blockquote} from "../models";
 
 async function main() {
-    for (const Model of [Users, Categories, Products, Cart, CartItem]) {
+    for (const Model of [Users, Categories, Products, Cart, CartItem, Blockquote]) {
         await Model.sync({alter: true});
     }
 

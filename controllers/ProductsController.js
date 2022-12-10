@@ -12,7 +12,6 @@ class ProductsController {
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
-            console.log()
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 

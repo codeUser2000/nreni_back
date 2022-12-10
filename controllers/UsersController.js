@@ -1,4 +1,4 @@
-import {Users} from "../models";
+import {Blockquote, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
@@ -171,7 +171,7 @@ class UsersController {
             });
 
             if (!user) {
-                throw HttpError(403);
+                throw HttpError(403, 'There is no such user');
             }
 
 
@@ -185,6 +185,32 @@ class UsersController {
             next(e);
         }
     }
+
+    static blockquote = async (req, res, next) => {
+        try {
+            const {firstName, lastName, email, message} = req.body;
+
+            const user = await Users.findOne({
+                where: {email}
+            });
+            if (!user) {
+                throw HttpError(403, 'There is no such user');
+            }
+
+            const quote = await Blockquote.create({
+                firstName, lastName, email, message
+            });
+
+            res.json({
+                status: 'ok',
+                quote,
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
 }
 
 export default UsersController
