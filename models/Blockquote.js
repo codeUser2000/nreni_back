@@ -12,20 +12,8 @@ Blockquote.init({
         autoIncrement: true,
         allowNull: false,
     },
-    UserId: {
+    userId: {
         type: DataTypes.BIGINT.UNSIGNED,
-    },
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        unique: 'email',
         allowNull: false,
     },
     message: {
