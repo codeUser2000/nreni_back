@@ -25,7 +25,6 @@ Blockquote.init({
     },
     email: {
         type: DataTypes.STRING,
-        unique: 'email',
         allowNull: false,
     },
     message: {

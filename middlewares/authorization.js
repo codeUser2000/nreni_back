@@ -6,6 +6,8 @@ const EXCLUDE = [
     '/users/login',
     '/users/register',
     '/users/confirm',
+    '/users/blockquote',
+    '/users/getBlockquote',
     '/users/forget',
     '/users/newPassword',
     '/products/products',

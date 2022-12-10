@@ -11,5 +11,7 @@ router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);
 router.post('/delete', UsersController.delete);
+router.post('/blockquote', UsersController.blockquote);
+router.get('/getBlockquote', UsersController.getBlockquote);
 
 export default router;

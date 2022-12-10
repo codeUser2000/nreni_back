@@ -211,6 +211,23 @@ class UsersController {
         }
     }
 
+    static getBlockquote = async (req, res, next) => {
+        try {
+
+            const quote = await Blockquote.findAll({
+                limit:10,
+            });
+
+            res.json({
+                status: 'ok',
+                quote,
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
 }
 
 export default UsersController
