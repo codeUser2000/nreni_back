@@ -188,17 +188,10 @@ class UsersController {
 
     static blockquote = async (req, res, next) => {
         try {
-            const {firstName, lastName, email, message} = req.body;
-
-            const user = await Users.findOne({
-                where: {email}
-            });
-            if (!user) {
-                throw HttpError(403, 'There is no such user');
-            }
+            const {firstName, lastName, message} = req.body;
 
             const quote = await Blockquote.create({
-                firstName, lastName, email, message
+                firstName, lastName, message
             });
 
             res.json({
