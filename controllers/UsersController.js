@@ -209,6 +209,7 @@ class UsersController {
 
             const quote = await Blockquote.findAll({
                 limit:10,
+                order: [['createdAt', 'desc']],
             });
 
             res.json({

@@ -2,6 +2,7 @@ import {Categories, Products} from '../models';
 import path from "path";
 import {v4 as uuidV4} from 'uuid';
 import imgPromise from "../services/imgPromise";
+import sequelize from "../services/sequelize";
 
 
 class ProductsController {
@@ -29,27 +30,53 @@ class ProductsController {
     }
     static getProducts = async (req, res, next) => {
         try {
-            const {lang = 'en', page = 1, limit = 9} = req.query;
+
+            const {
+                lang = 'en',
+                query = '',
+                category = [],
+                min=0,
+                max=9999999999,
+                page = 1,
+                limit = 9
+            } = req.query;
+            const productPrice = await Products.findAll({
+                attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice'],[sequelize.fn('max', sequelize.col('price')), 'maxPrice']],
+                raw: true,
+            })
             const product = await Products.findAll({
                 include: [{
                     model: Categories,
                     as: 'categories',
-                    // where:
                 }],
                 // include:[{
                 //     model:TranslateData,
                 //     as: 'translation',
                 //     // where:
                 // }],
+                where:{
+                    $or: [{
+                        $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
+                    },]
+                },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
             });
-            const total = await Products.count();
+
+            const total = await Products.count({
+                where:{
+                    $and:[
+                        {price:{$gte:+min}},
+                        {price:{$lte:+max}},
+                    ],
+                },
+            });
 
             res.json({
                 status: 'ok',
                 product,
+                productPrice,
                 total,
                 totalPages: Math.ceil(total / limit)
             });
