@@ -12,9 +12,6 @@ Blockquote.init({
         autoIncrement: true,
         allowNull: false,
     },
-    UserId: {
-        type: DataTypes.BIGINT.UNSIGNED,
-    },
     firstName: {
         type: DataTypes.STRING,
         allowNull: false
@@ -24,7 +21,7 @@ Blockquote.init({
         allowNull: false
     },
     message: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT("long"),
     }
 }, {
     sequelize,
