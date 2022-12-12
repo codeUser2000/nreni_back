@@ -3,6 +3,7 @@ import path from "path";
 import {v4 as uuidV4} from 'uuid';
 import imgPromise from "../services/imgPromise";
 import sequelize from "../services/sequelize";
+import categories from "../routes/categories";
 
 
 class ProductsController {
@@ -28,9 +29,9 @@ class ProductsController {
             next(e);
         }
     }
+
     static getProducts = async (req, res, next) => {
         try {
-
             const {
                 lang = 'en',
                 query = '',
@@ -57,7 +58,9 @@ class ProductsController {
                 where:{
                     $or: [{
                         $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
-                    },]
+                    },
+                    ]
+
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
