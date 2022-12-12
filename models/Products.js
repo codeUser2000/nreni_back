@@ -26,7 +26,7 @@ Products.init({
         allowNull: false,
     },
     price: {
-        type: DataTypes.DECIMAL(10,3).UNSIGNED,
+        type: DataTypes.DECIMAL(10,2).UNSIGNED,
         allowNull: false,
     },
     discount: {
