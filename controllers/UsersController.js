@@ -70,11 +70,10 @@ class UsersController {
         }
     }
 
+
     static list = async (req, res, next) => {
         try {
-
             const user = await Users.findAll()
-
             res.json({
                 status: 'ok',
                 user

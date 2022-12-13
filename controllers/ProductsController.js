@@ -1,8 +1,10 @@
-import {Categories, Products} from '../models';
+import {Categories, Products, Users} from '../models';
 import path from "path";
 import {v4 as uuidV4} from 'uuid';
 import imgPromise from "../services/imgPromise";
 import sequelize from "../services/sequelize";
+import categories from "../routes/categories";
+import HttpError from "http-errors";
 
 
 class ProductsController {
@@ -28,9 +30,59 @@ class ProductsController {
             next(e);
         }
     }
+
+    static update = async (req, res, next) => {
+        try {
+            const {id,data} = req.body;
+            const product = await Products.findOne({
+                where: {id}
+            });
+
+            if (!product) {
+                throw HttpError(403);
+            }
+
+            await Products.update(
+                data,
+                {
+                    where: {id},
+                }
+            );
+
+            res.json({
+                status: 'ok',
+                product
+            });
+
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static delete = async (req, res, next) => {
+        try {
+            const {id} = req.body;
+
+            const product = await Products.findOne({
+                where: {id}
+            });
+
+            if (!product) {
+                throw HttpError(403, 'There is no such user');
+            }
+            await product.destroy()
+
+            res.json({
+                status: 'ok',
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static getProducts = async (req, res, next) => {
         try {
-
             const {
                 lang = 'en',
                 query = '',
@@ -57,7 +109,9 @@ class ProductsController {
                 where:{
                     $or: [{
                         $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
-                    },]
+                    },
+                    ]
+
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
@@ -86,5 +140,6 @@ class ProductsController {
         }
     }
 }
+
 
 export default ProductsController;
