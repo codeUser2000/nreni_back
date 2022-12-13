@@ -62,7 +62,8 @@ class UsersController {
             );
 
 
-            res.write(`<a href="${FRONT_URL}login">Congrats :) now go and login</a>`)
+            res.write(`<div class="loginProfile"> <p>Thanks for signing up and showing interest</p><a class="loginProfileLink" href="${FRONT_URL}login">now go and login</a>
+</div>`)
             res.end()
         } catch (e) {
             next(e);
@@ -208,7 +209,7 @@ class UsersController {
         try {
 
             const quote = await Blockquote.findAll({
-                limit:10,
+                limit: 10,
                 order: [['createdAt', 'desc']],
             });
 
