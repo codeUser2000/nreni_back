@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import HttpError from "http-errors";
+import {Users} from "../models";
 
 const {JWT_SECRET} = process.env;
 const EXCLUDE = [
@@ -14,7 +15,7 @@ const EXCLUDE = [
     '/img'
 ];
 
-export default function authorization(req, res, next) {
+export default async function authorization(req, res, next) {
     try {
         const {path, method} = req;
 
@@ -26,6 +27,7 @@ export default function authorization(req, res, next) {
         const token = req.headers.authorization || req.query.token || '';
 
         let userId;
+
 
         try {
             const data = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);

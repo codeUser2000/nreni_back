@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/register', validate(usersRegisterSchema), UsersController.register);
 router.get('/confirm', UsersController.confirm);
+router.get('/list', UsersController.list);
 router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);

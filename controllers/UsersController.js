@@ -1,4 +1,4 @@
-import {Blockquote, Users} from "../models";
+import {Blockquote, Products, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
@@ -73,10 +73,19 @@ class UsersController {
 
     static list = async (req, res, next) => {
         try {
-            const user = await Users.findAll()
+            const {page = 1, limit = 9
+            } = req.query;
+            const user = await Users.findAll({
+                    order: [['createdAt', 'desc']],
+                    offset: (+page - 1) * +limit,
+                    limit: +limit
+                });
+            const total = await Products.count();
             res.json({
                 status: 'ok',
-                user
+                user,
+                total,
+                totalPages: Math.ceil(total / limit)
             })
         } catch (e) {
             next(e);
