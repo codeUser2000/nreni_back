@@ -10,6 +10,7 @@ const EXCLUDE = [
     '/users/blockquote',
     '/users/getBlockquote',
     '/users/forget',
+    '/users/list',
     '/users/newPassword',
     '/products/products',
     '/img'

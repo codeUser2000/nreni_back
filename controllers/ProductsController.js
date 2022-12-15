@@ -33,7 +33,7 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {id,data} = req.body;
+            const {id, data} = req.body;
             const product = await Products.findOne({
                 where: {id}
             });
@@ -87,13 +87,13 @@ class ProductsController {
                 lang = 'en',
                 query = '',
                 category = [],
-                min=0,
-                max=9999999999,
+                min = 0,
+                max = 9999999999,
                 page = 1,
                 limit = 9
             } = req.query;
             const productPrice = await Products.findAll({
-                attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice'],[sequelize.fn('max', sequelize.col('price')), 'maxPrice']],
+                attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice'], [sequelize.fn('max', sequelize.col('price')), 'maxPrice']],
                 raw: true,
             })
             const product = await Products.findAll({
@@ -106,7 +106,7 @@ class ProductsController {
                 //     as: 'translation',
                 //     // where:
                 // }],
-                where:{
+                where: {
                     $or: [{
                         $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
                     },
@@ -119,10 +119,10 @@ class ProductsController {
             });
 
             const total = await Products.count({
-                where:{
-                    $and:[
-                        {price:{$gte:+min}},
-                        {price:{$lte:+max}},
+                where: {
+                    $and: [
+                        {price: {$gte: +min}},
+                        {price: {$lte: +max}},
                     ],
                 },
             });
