@@ -23,7 +23,7 @@ const corsOptions ={
   optionSuccessStatus:200
 }
 app.use(cors(corsOptions));
-app.use(authorization);
+// app.use(authorization);
 
 
 export default app;

@@ -62,8 +62,7 @@ class UsersController {
             );
 
 
-            res.write(`<div class="loginProfile"> <p>Thanks for signing up and showing interest</p><a class="loginProfileLink" href="${FRONT_URL}login">now go and login</a>
-</div>`)
+            res.write(`<div class="loginProfile"> <p>Thanks for signing up and showing interest</p><a class="loginProfileLink" href="${FRONT_URL}login">now go and login</a></div>`)
             res.end()
         } catch (e) {
             next(e);
@@ -73,13 +72,14 @@ class UsersController {
 
     static list = async (req, res, next) => {
         try {
-            const {page = 1, limit = 9
+            const {
+                page = 1, limit = 9
             } = req.query;
             const user = await Users.findAll({
-                    order: [['createdAt', 'desc']],
-                    offset: (+page - 1) * +limit,
-                    limit: +limit
-                });
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * +limit,
+                limit: +limit
+            });
             const total = await Products.count();
             res.json({
                 status: 'ok',
@@ -128,12 +128,36 @@ class UsersController {
             if (user.status !== "active") {
                 throw HttpError(403, "You haven't confirmed your account");
             }
-            const token = jwt.sign({userId: user.id}, JWT_SECRET);
+            const token = jwt.sign({userId: user.id}, JWT_SECRET,{expiresIn:'10m'});
 
             res.json({
                 status: 'ok',
                 token,
                 user
+            });
+
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static adminLogin = async (req, res, next) => {
+        try {
+            const {email, password} = req.body;
+            const admin = await Users.findOne({
+                where: {email,admin:true}
+            });
+
+            if (!admin || admin.getDataValue('password') !== Users.passwordHash(password)) {
+                throw HttpError(403, "You are not admin");
+            }
+
+            const token = jwt.sign({userId: admin.id}, JWT_SECRET);
+
+            res.json({
+                status: 'ok',
+                token,
+                admin
             });
 
         } catch (e) {
