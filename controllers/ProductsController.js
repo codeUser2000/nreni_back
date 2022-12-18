@@ -25,7 +25,7 @@ class ProductsController {
 
             res.json({
                 status: 'ok ',
-                product
+                product,
             })
         } catch (e) {
             next(e);
