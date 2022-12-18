@@ -1,5 +1,6 @@
 import {Categories, Products, Users} from '../models';
 import path from "path";
+import fs from "fs";
 import {v4 as uuidV4} from 'uuid';
 import imgPromise from "../services/imgPromise";
 import sequelize from "../services/sequelize";
@@ -71,6 +72,11 @@ class ProductsController {
             if (!product) {
                 throw HttpError(403, 'There is no such user');
             }
+
+            const file = path.join(__dirname,'../public',product.avatar)
+            console.log(file)
+            fs.unlinkSync(file)
+
             await product.destroy()
 
             res.json({
