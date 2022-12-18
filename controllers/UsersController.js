@@ -69,7 +69,6 @@ class UsersController {
         }
     }
 
-
     static list = async (req, res, next) => {
         try {
             const {
@@ -80,7 +79,7 @@ class UsersController {
                 offset: (+page - 1) * +limit,
                 limit: +limit
             });
-            const total = await Products.count();
+            const total = await Users.count();
             res.json({
                 status: 'ok',
                 user,
@@ -122,7 +121,7 @@ class UsersController {
             });
 
             if (!user || user.getDataValue('password') !== Users.passwordHash(password)) {
-                throw HttpError(403, "Password is wrong");
+                throw HttpError(403, "Password or login is wrong");
             }
 
             if (user.status !== "active") {
@@ -140,7 +139,6 @@ class UsersController {
             next(e)
         }
     }
-
 
     static adminLogin = async (req, res, next) => {
         try {

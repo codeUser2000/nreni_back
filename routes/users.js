@@ -12,7 +12,7 @@ router.get('/list', adminAuth, UsersController.list);
 router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);
-router.post('/delete', UsersController.delete);
+router.post('/delete', adminAuth, UsersController.delete);
 router.post('/blockquote', UsersController.blockquote);
 router.get('/getBlockquote', UsersController.getBlockquote);
 
