@@ -128,7 +128,7 @@ class UsersController {
             if (user.status !== "active") {
                 throw HttpError(403, "You haven't confirmed your account");
             }
-            const token = jwt.sign({userId: user.id}, JWT_SECRET,{expiresIn:'10m'});
+            const token = jwt.sign({userId: user.id}, JWT_SECRET);
 
             res.json({
                 status: 'ok',
@@ -141,11 +141,12 @@ class UsersController {
         }
     }
 
+
     static adminLogin = async (req, res, next) => {
         try {
             const {email, password} = req.body;
             const admin = await Users.findOne({
-                where: {email,admin:true}
+                where: {email, admin: true}
             });
 
             if (!admin || admin.getDataValue('password') !== Users.passwordHash(password)) {
