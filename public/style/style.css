@@ -1,0 +1,43 @@
+body {
+    padding: 50px;
+    background-color: #ffece5;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.loginProfile {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ffece5;
+}
+
+.loginProfileTitle {
+    color: #4a4a4a;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+}
+
+.loginProfileImg {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    margin-bottom: -10px;
+}
+
+.loginProfileLink {
+    color: #4a4a4a;
+    font-size: 25px;
+    font-weight: 400;
+    transition: all 0.4s;
+    text-transform: uppercase;
+}
+
+.loginProfileLink:hover {
+    color: #c31e39;
+}

@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.post('/createProducts', adminAuth, uploader.single('avatar'), ProductsController.createProducts);
 router.post('/delete', ProductsController.delete);
+router.post('/update', ProductsController.update);
 router.get('/products', ProductsController.getProducts);
 export default router;

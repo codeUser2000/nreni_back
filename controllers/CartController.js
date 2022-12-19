@@ -10,6 +10,19 @@ class CartController {
             next(e);
         }
     }
+    static cartItem = async (req, res, next) => {
+        try {
+            const {productId, cartId, price, quantity, status} = req.body
+
+
+            res.json({
+                status: 'ok',
+            })
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static getCartItem = async (req, res, next) => {
         try {
             const {productId, cartId, price, quantity, status} = req.body

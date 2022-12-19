@@ -15,13 +15,13 @@ class ProductsController {
             const {title, description, categoryId, price, discount, shop = 'available'} = req.body;
             const {file} = req;
 
-            console.log(req.body,req.file)
+            console.log(req.body, req.file)
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 
             const product = await Products.create({
-                title, description, categoryId:+categoryId, price:+price, discount:+discount, shop, avatar
+                title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar
             });
 
             res.json({
@@ -35,9 +35,9 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {id, data} = req.body;
+            const {data} = req.body;
             const product = await Products.findOne({
-                where: {id}
+                where: {id: data.id}
             });
 
             if (!product) {
@@ -47,7 +47,7 @@ class ProductsController {
             await Products.update(
                 data,
                 {
-                    where: {id},
+                    where: {id: data.id},
                 }
             );
 
@@ -73,7 +73,7 @@ class ProductsController {
                 throw HttpError(403, 'There is no such user');
             }
 
-            const file = path.join(__dirname,'../public',product.avatar)
+            const file = path.join(__dirname, '../public', product.avatar)
             console.log(file)
             fs.unlinkSync(file)
 

@@ -194,6 +194,30 @@ class UsersController {
         }
     }
 
+    static userSelfDelete = async (req, res, next) => {
+        try {
+            const {email} = req.body;
+
+            const user = await Users.findOne({
+                where: {email}
+            });
+
+            if (!user) {
+                throw HttpError(403, 'There is no such user');
+            }
+
+
+            await user.destroy()
+
+            res.json({
+                status: 'ok',
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static delete = async (req, res, next) => {
         try {
             const {email} = req.body;

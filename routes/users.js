@@ -3,6 +3,7 @@ import UsersController from '../controllers/UsersController';
 import validate from '../middlewares/validate';
 import {usersRegisterSchema} from '../schema/users';
 import adminAuth from "../middlewares/AdminAuth";
+import authorization from "../middlewares/authorization";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);
 router.post('/delete', adminAuth, UsersController.delete);
+router.post('/deleteSelf', authorization, UsersController.userSelfDelete);
 router.post('/blockquote', UsersController.blockquote);
 router.get('/getBlockquote', UsersController.getBlockquote);
 
