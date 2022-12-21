@@ -6,7 +6,7 @@ import imgPromise from "../services/imgPromise";
 import sequelize from "../services/sequelize";
 import categories from "../routes/categories";
 import HttpError from "http-errors";
-
+import _ from 'lodash'
 
 class ProductsController {
 
@@ -34,19 +34,30 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {data} = req.body;
+            const {title, id, description, categoryId, price, discount, shop = 'available'} = req.body;
+            const {file} = req;
+            console.log(file,3456788987784567)
             const product = await Products.findOne({
-                where: {id: data.id}
+                where: {id}
             });
 
             if (!product) {
                 throw HttpError(403);
             }
+            let avatar;
+            if (!_.isEmpty(file)){
+                const file = path.join(__dirname, '../public', product.avatar)
+                fs.unlinkSync(file)
+                const originalName = file.originalname.replace(/\..+$/, '.jpg');
+                avatar = path.join('/img', uuidV4() + '-' + originalName);
+                await imgPromise('../public', file, avatar)
+            }
+
 
             await Products.update(
-                data,
+                {title, id, description, categoryId, price, discount,avatar:avatar?avatar:product.avatar},
                 {
-                    where: {id: data.id},
+                    where: {id},
                 }
             );
 
