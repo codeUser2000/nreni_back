@@ -15,7 +15,6 @@ class ProductsController {
             const {title, description, categoryId, price, discount, shop = 'available'} = req.body;
             const {file} = req;
 
-            console.log(req.body, req.file)
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
@@ -74,7 +73,6 @@ class ProductsController {
             }
 
             const file = path.join(__dirname, '../public', product.avatar)
-            console.log(file)
             fs.unlinkSync(file)
 
             await product.destroy()

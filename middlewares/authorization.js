@@ -11,6 +11,8 @@ const EXCLUDE = [
     '/users/getBlockquote',
     '/users/forget',
     '/users/newPassword',
+    '/cart/cart',
+    '/cart/cartItem',
     '/products/products',
     '/img'
 ];

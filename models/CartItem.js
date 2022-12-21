@@ -12,12 +12,24 @@ CartItem.init({
         autoIncrement: true,
         allowNull: false,
     },
-    ProductId: {
+    cartId: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
     },
-    CartId: {
+    productId: {
         type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false,
+    },
+    // avatar: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    // },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    description: {
+        type: DataTypes.STRING,
         allowNull: false,
     },
     price: {

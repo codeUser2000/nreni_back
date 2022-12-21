@@ -1,5 +1,7 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
+import CartItem from "./CartItem";
+
 
 class Cart extends Model {
 
@@ -12,13 +14,8 @@ Cart.init({
         autoIncrement: true,
         allowNull: false,
     },
-    UserId: {
+    userId: {
         type: DataTypes.BIGINT.UNSIGNED,
-    },
-    status: {
-        type: DataTypes.ENUM('active', 'pending', 'deleted'),
-        allowNull: false,
-        defaultValue: 'pending'
     },
     firstName: {
         type: DataTypes.STRING,
@@ -38,5 +35,19 @@ Cart.init({
     modelName: 'cart',
     tableName: 'cart',
 });
+
+CartItem.belongsTo(Cart, {
+    foreignKey: 'cartId',
+    as: 'carts',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+});
+
+Cart.hasMany(CartItem, {
+    foreignKey: 'cartId',
+    as: 'cartItem',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
 
 export default Cart;
