@@ -41,7 +41,7 @@ class UsersController {
 
     static confirm = async (req, res, next) => {
         try {
-            const {email, token} = req.query;
+            const {email, token} = req.body;
 
             const user = await Users.findOne({
                 where: {email}
@@ -62,8 +62,10 @@ class UsersController {
             );
 
 
-            res.write(`<div class="loginProfile"> <p>Thanks for signing up and showing interest</p><a class="loginProfileLink" href="${FRONT_URL}login">now go and login</a></div>`)
-            res.end()
+            res.json({
+                status:'ok'
+        })
+
         } catch (e) {
             next(e);
         }

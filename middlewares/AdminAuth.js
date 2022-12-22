@@ -31,9 +31,7 @@ export default async function adminAuth(req, res, next) {
         if (_.isEmpty(admin)) {
             throw HttpError(401, 'Invalid admin token')
         }
-        // if (admin) {
-        //     throw HttpError(401, JSON.stringify(admin))
-        // }
+
         req.admin = admin;
         next();
     } catch (e) {

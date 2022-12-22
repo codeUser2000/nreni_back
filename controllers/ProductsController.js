@@ -18,14 +18,29 @@ class ProductsController {
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
-
-            const product = await Products.create({
+            await Products.create({
                 title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar
             });
 
+            const products = Products.findAll({
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
+                where: {
+                    $or: [{
+                        $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
+                    },
+                    ]
+                },
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * +limit,
+                limit: +limit
+            })
+
             res.json({
                 status: 'ok ',
-                product,
+                products,
             })
         } catch (e) {
             next(e);
@@ -36,7 +51,7 @@ class ProductsController {
         try {
             const {title, id, description, categoryId, price, discount, shop = 'available'} = req.body;
             const {file} = req;
-            console.log(file,3456788987784567)
+            console.log(file, 3456788987784567)
             const product = await Products.findOne({
                 where: {id}
             });
@@ -45,9 +60,9 @@ class ProductsController {
                 throw HttpError(403);
             }
             let avatar;
-            if (!_.isEmpty(file)){
-                const file = path.join(__dirname, '../public', product.avatar)
-                fs.unlinkSync(file)
+            if (!_.isEmpty(file)) {
+                const oldFile = path.join(__dirname, '../public', product.avatar)
+                fs.unlinkSync(oldFile)
                 const originalName = file.originalname.replace(/\..+$/, '.jpg');
                 avatar = path.join('/img', uuidV4() + '-' + originalName);
                 await imgPromise('../public', file, avatar)
@@ -55,7 +70,7 @@ class ProductsController {
 
 
             await Products.update(
-                {title, id, description, categoryId, price, discount,avatar:avatar?avatar:product.avatar},
+                {title, id, description, categoryId, price, discount, avatar: avatar ? avatar : product.avatar},
                 {
                     where: {id},
                 }
@@ -117,11 +132,7 @@ class ProductsController {
                     model: Categories,
                     as: 'categories',
                 }],
-                // include:[{
-                //     model:TranslateData,
-                //     as: 'translation',
-                //     // where:
-                // }],
+
                 where: {
                     $or: [{
                         $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]

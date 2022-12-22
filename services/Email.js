@@ -18,7 +18,7 @@ class Email {
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,
             subject: 'Complete Registration',
-            html: `<a href="${frontUrl}?email=${email}&token=${token}">Complete Registration</a>`
+            html: `<a href="${FRONT_URL}complete?email=${email}&token=${token}">Complete Registration</a>`
         })
     }
     static sendDropPassword(email) {

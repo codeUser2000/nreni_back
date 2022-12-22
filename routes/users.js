@@ -8,7 +8,7 @@ import authorization from "../middlewares/authorization";
 const router = express.Router();
 
 router.post('/register', validate(usersRegisterSchema), UsersController.register);
-router.get('/confirm', UsersController.confirm);
+router.post('/confirm', UsersController.confirm);
 router.get('/list', adminAuth, UsersController.list);
 router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
