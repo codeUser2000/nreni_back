@@ -12,14 +12,14 @@ class ProductsController {
 
     static createProducts = async (req, res, next) => {
         try {
-            const {title, description, categoryId, price, discount, shop = 'available'} = req.body;
+            const {title, description, categoryId, price, discount,countProduct, shop = 'available'} = req.body;
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
             await Products.create({
-                title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar
+                title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar,countProduct
             });
 
             const products = await Products.findAll({

@@ -25,6 +25,10 @@ Products.init({
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
     },
+    countProduct: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+    },
     price: {
         type: DataTypes.DECIMAL(10,2).UNSIGNED,
         allowNull: false,
