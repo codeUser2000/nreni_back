@@ -48,7 +48,6 @@ class ProductsController {
         try {
             const {title, id, description, categoryId, price, discount, shop = 'available'} = req.body;
             const {file} = req;
-            console.log(file, 3456788987784567)
             const product = await Products.findOne({
                 where: {id}
             });
@@ -59,6 +58,7 @@ class ProductsController {
             }
             let avatar;
             if (!_.isEmpty(file)) {
+                console.log(89878)
                 const oldFile = path.join(__dirname, '../public', product.avatar)
                 fs.unlinkSync(oldFile)
                 const originalName = file.originalname.replace(/\..+$/, '.jpg');
