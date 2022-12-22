@@ -27,15 +27,8 @@ class ProductsController {
                     model: Categories,
                     as: 'categories',
                 }],
-                where: {
-                    $or: [{
-                        $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
-                    },
-                    ]
-                },
                 order: [['createdAt', 'desc']],
-                offset: (+page - 1) * +limit,
-                limit: +limit
+                limit: 9,
             })
 
             res.json({
