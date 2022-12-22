@@ -2,7 +2,7 @@ import sharp from "sharp";
 import path from "path";
 
 const imgPromise = (dir, file,image) => {
-    Promise.all([
+    return Promise.all([
         sharp(file.buffer)
             .rotate()
             .jpeg({mozjpeg: true})
