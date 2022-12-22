@@ -22,7 +22,7 @@ class ProductsController {
                 title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar
             });
 
-            const products = Products.findAll({
+            const products = await Products.findAll({
                 include: [{
                     model: Categories,
                     as: 'categories',
@@ -31,9 +31,13 @@ class ProductsController {
                 limit: 9,
             })
 
+            const total = await Products.count();
+
             res.json({
                 status: 'ok ',
                 products,
+                total,
+                totalPages: Math.ceil(total / 9)
             })
         } catch (e) {
             next(e);
@@ -48,6 +52,7 @@ class ProductsController {
             const product = await Products.findOne({
                 where: {id}
             });
+
 
             if (!product) {
                 throw HttpError(403);
@@ -69,9 +74,21 @@ class ProductsController {
                 }
             );
 
+
+            const products = await Products.findAll({
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
+                order: [['createdAt', 'desc']],
+                limit: 9,
+            })
+            const total = await Products.count();
             res.json({
                 status: 'ok',
-                product
+                products,
+                total,
+                totalPages: Math.ceil(total / 9)
             });
 
         } catch (e) {
