@@ -46,7 +46,7 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {title, id, description, categoryId, price, discount, shop = 'available'} = req.body;
+            const {title, id, description, categoryId, price, discount, shop = 'available',countProduct} = req.body;
             const {file} = req;
             const product = await Products.findOne({
                 where: {id}
@@ -68,7 +68,7 @@ class ProductsController {
 
 
             await Products.update(
-                {title, id, description, categoryId, price, discount, avatar: avatar ? avatar : product.avatar},
+                {title, id, description, categoryId, price, countProduct,discount, avatar: avatar ? avatar : product.avatar},
                 {
                     where: {id},
                 }
@@ -113,8 +113,23 @@ class ProductsController {
 
             await product.destroy()
 
+            const products = await Products.findAll({
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
+                order: [['createdAt', 'desc']],
+                limit: 9,
+            })
+            const total = await Products.count({
+                where:{}
+            });
+
             res.json({
                 status: 'ok',
+                products,
+                total,
+                totalPages: Math.ceil(total / 9)
             });
 
         } catch (e) {
@@ -144,11 +159,7 @@ class ProductsController {
                 }],
 
                 where: {
-                    $or: [{
-                        $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
-                    },
-                    ]
-
+                    $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
@@ -170,6 +181,27 @@ class ProductsController {
                 productPrice,
                 total,
                 totalPages: Math.ceil(total / limit)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static getSingleProduct = async (req, res, next) => {
+        try {
+            const {id} = req.query;
+            const product = await Products.findOne({
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
+                where: {id:+id},
+            });
+
+            res.json({
+                status: 'ok',
+                product,
             });
 
         } catch (e) {
