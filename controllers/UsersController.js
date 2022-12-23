@@ -1,4 +1,4 @@
-import {Blockquote, Users} from "../models";
+import {Blockquote, Categories, Products, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
@@ -271,14 +271,25 @@ class UsersController {
             });
 
             if (!blockquote) {
-                throw HttpError(403, 'There is no such user');
+                throw HttpError(403, 'There is no such blockquote');
             }
 
 
             await blockquote.destroy()
 
+            const blockquotes = await Blockquote.findAll({
+                order: [['createdAt', 'desc']],
+                limit: 9,
+            })
+            const total = await Blockquote.count({
+                where:{}
+            });
+
             res.json({
                 status: 'ok',
+                blockquotes,
+                total,
+                totalPages: Math.ceil(total / 9)
             });
 
         } catch (e) {
