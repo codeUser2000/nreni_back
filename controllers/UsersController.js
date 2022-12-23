@@ -281,9 +281,7 @@ class UsersController {
                 order: [['createdAt', 'desc']],
                 limit: 9,
             })
-            const total = await Blockquote.count({
-                where:{}
-            });
+            const total = await Blockquote.count();
 
             res.json({
                 status: 'ok',
