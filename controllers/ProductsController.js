@@ -18,6 +18,7 @@ class ProductsController {
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
+
             await Products.create({
                 title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar,countProduct
             });

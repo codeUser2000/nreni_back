@@ -1,4 +1,4 @@
-import {Blockquote, Products, Users} from "../models";
+import {Blockquote, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
@@ -255,6 +255,30 @@ class UsersController {
             res.json({
                 status: 'ok',
                 quote,
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static deleteBlockquote = async (req, res, next) => {
+        try {
+            const {id} = req.body;
+
+            const blockquote = await Blockquote.findOne({
+                where: {id}
+            });
+
+            if (!blockquote) {
+                throw HttpError(403, 'There is no such user');
+            }
+
+
+            await blockquote.destroy()
+
+            res.json({
+                status: 'ok',
             });
 
         } catch (e) {

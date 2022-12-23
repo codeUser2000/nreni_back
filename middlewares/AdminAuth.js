@@ -24,7 +24,6 @@ export default async function adminAuth(req, res, next) {
                     admin:true
                 }
             });
-            console.log(admin)
         } catch (e) {}
 
 
