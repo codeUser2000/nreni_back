@@ -142,17 +142,34 @@ class ProductsController {
         try {
             const {
                 lang = 'en',
-                query = '',
-                category = [],
+                filter = '',
                 min = 0,
                 max = 9999999999,
                 page = 1,
                 limit = 9
             } = req.query;
+
             const productPrice = await Products.findAll({
                 attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice'], [sequelize.fn('max', sequelize.col('price')), 'maxPrice']],
                 raw: true,
             })
+            const categories = await Categories.findAll({
+                where:{
+                    type:{
+                        $in : filter.split(',')
+                    }
+                }
+            })
+            let whereOption = {}
+            const categoryArrId = []
+            if(filter){
+                categories.map((c) => {
+                    categoryArrId.push(c.id)
+                })
+                whereOption = {categoryId: categoryArrId}
+            }
+
+
             const product = await Products.findAll({
                 include: [{
                     model: Categories,
@@ -160,7 +177,8 @@ class ProductsController {
                 }],
 
                 where: {
-                    $and: [{price: {$gte: +min}}, {price: {$lte: +max}},]
+                    $and: [{price: {$gte: +min}}, {price: {$lte: +max}},],
+                    ...whereOption
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
@@ -173,12 +191,14 @@ class ProductsController {
                         {price: {$gte: +min}},
                         {price: {$lte: +max}},
                     ],
+                    ...whereOption
                 },
             });
 
             res.json({
                 status: 'ok',
                 product,
+                categories,
                 productPrice,
                 total,
                 totalPages: Math.ceil(total / limit)
