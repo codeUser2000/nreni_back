@@ -1,11 +1,11 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 
-class CartItem extends Model {
+class CartItems extends Model {
 
 }
 
-CartItem.init({
+CartItems.init({
     id: {
         type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
@@ -54,4 +54,4 @@ CartItem.init({
     tableName: 'cart_item',
 });
 
-export default CartItem;
+export default CartItems;

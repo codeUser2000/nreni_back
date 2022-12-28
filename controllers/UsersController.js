@@ -76,11 +76,13 @@ class UsersController {
             const {
                 page = 1, limit = 9
             } = req.query;
+
             const user = await Users.findAll({
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
             });
+
             const total = await Users.count();
             res.json({
                 status: 'ok',
@@ -142,30 +144,6 @@ class UsersController {
         }
     }
 
-    static adminLogin = async (req, res, next) => {
-        try {
-            const {email, password} = req.body;
-            const admin = await Users.findOne({
-                where: {email, admin: true}
-            });
-
-            if (!admin || admin.getDataValue('password') !== Users.passwordHash(password)) {
-                throw HttpError(403, "You are not admin");
-            }
-
-            const token = jwt.sign({userId: admin.id}, JWT_SECRET);
-
-            res.json({
-                status: 'ok',
-                token,
-                admin
-            });
-
-        } catch (e) {
-            next(e)
-        }
-    }
-
     static newPassword = async (req, res, next) => {
         try {
             const {email, password} = req.body;
@@ -217,6 +195,30 @@ class UsersController {
 
         } catch (e) {
             next(e);
+        }
+    }
+
+    static adminLogin = async (req, res, next) => {
+        try {
+            const {email, password} = req.body;
+            const admin = await Users.findOne({
+                where: {email, admin: true}
+            });
+
+            if (!admin || admin.getDataValue('password') !== Users.passwordHash(password)) {
+                throw HttpError(403, "You are not admin");
+            }
+
+            const token = jwt.sign({userId: admin.id}, JWT_SECRET);
+
+            res.json({
+                status: 'ok',
+                token,
+                admin
+            });
+
+        } catch (e) {
+            next(e)
         }
     }
 
