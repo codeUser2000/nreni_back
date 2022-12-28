@@ -61,7 +61,9 @@ class ProductsController {
             if (!_.isEmpty(file)) {
                 console.log(89878)
                 const oldFile = path.join(__dirname, '../public', product.avatar)
-                fs.unlinkSync(oldFile)
+                if(fs.existsSync(oldFile)){
+                    fs.unlinkSync(oldFile)
+                }
                 const originalName = file.originalname.replace(/\..+$/, '.jpg');
                 avatar = path.join('/img', uuidV4() + '-' + originalName);
                 await imgPromise('../public', file, avatar)
@@ -110,8 +112,9 @@ class ProductsController {
             }
 
             const file = path.join(__dirname, '../public', product.avatar)
-            fs.unlinkSync(file)
-
+            if(fs.existsSync(file)){
+                fs.unlinkSync(file)
+            }
             await product.destroy()
 
             const products = await Products.findAll({
