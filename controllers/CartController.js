@@ -20,31 +20,6 @@ class CartController {
         }
     }
 
-    static cartItem = async (req, res, next) => {
-        try {
-            const {cartId, productId, title, description, price, quantity, status} = req.query;
-            const {id} = req.query;
-
-            const product = await Products.findOne({
-                where: {id}
-            });
-
-            if (!product) {
-                throw HttpError(403, 'There is no such product');
-            }
-
-            const cartItem = await CartItem.create({
-                cartId, productId, title, description, price, quantity, status
-            });
-            res.json({
-                status: 'ok',
-                cartItem,
-            })
-        } catch (e) {
-            next(e);
-        }
-    }
-
     static createCartItem = async (req, res, next) => {
         try {
             const {cartId, productId, title, description, price, quantity, status} = req.query;
@@ -61,13 +36,10 @@ class CartController {
             const cartItem = await CartItem.create({
                 cartId, productId, title, description, price, quantity, status
             });
-            console.log(cartItem)
-
             res.json({
                 status: 'ok',
                 cartItem,
             })
-
         } catch (e) {
             next(e);
         }
