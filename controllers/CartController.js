@@ -36,7 +36,6 @@ class CartController {
             const cartItem = await CartItem.create({
                 cartId, productId, title, description, price, quantity, status
             });
-            console.log(cartItem)
             res.json({
                 status: 'ok',
                 cartItem,
@@ -62,6 +61,7 @@ class CartController {
             const cartItem = await CartItem.create({
                 cartId, productId, title, description, price, quantity, status
             });
+            console.log(cartItem)
 
             res.json({
                 status: 'ok',
