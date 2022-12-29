@@ -1,5 +1,6 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
+import Products from "./Products";
 
 class CartItems extends Model {
 
@@ -41,5 +42,21 @@ CartItems.init({
     modelName: 'cart_item',
     tableName: 'cart_item',
 });
+
+
+CartItems.belongsTo(Products,{
+    foreignKey: 'productId',
+    as: 'product',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
+
+Products.hasMany(CartItems,{
+    foreignKey: 'productId',
+    as: 'product',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
+
 
 export default CartItems;

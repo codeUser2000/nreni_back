@@ -1,10 +1,11 @@
-import {Cart, CartItem, Products, Users} from "../models";
+import {Cart, CartItem, Categories, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 class CartController {
     static cart = async (req, res, next) => {
         try {
-            const {userId} = req.body;
+            console.log(req.body)
+            const {userId} = req.query;
 
             const user = Users.findOne({
                 where: {id: userId}
@@ -18,7 +19,7 @@ class CartController {
 
             res.json({
                 status: 'ok',
-                cart
+               // cart
             })
         } catch (e) {
             next(e);
@@ -102,6 +103,10 @@ class CartController {
 
 
             const cartItem = await CartItem.findAll({
+                include: [{
+                    model: Products,
+                    as: 'product',
+                }],
                 where: {id: cartId},
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
