@@ -27,7 +27,7 @@ class CartController {
 
     static addToCart = async (req, res, next) => {
         try {
-            const {cartId, productId, price, quantity, status} = req.body;
+            const {cartId, productId, price, quantity, status = 'unsold'} = req.body;
 
             const product = await Products.findOne({
                 where: {id: productId}
