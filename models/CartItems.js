@@ -20,18 +20,6 @@ CartItems.init({
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
     },
-    // avatar: {
-    //     type: DataTypes.STRING,
-    //     allowNull: true,
-    // },
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     price: {
         type: DataTypes.DECIMAL,
         allowNull: false,

@@ -1,14 +1,19 @@
 import {Cart, CartItem, Products, Users} from "../models";
 import HttpError from "http-errors";
-import cartItems from "../models/CartItems";
 
 class CartController {
     static cart = async (req, res, next) => {
         try {
-            const {userId, firstName, lastName, email} = req.query;
+            const {userId} = req.body;
 
+            const user = Users.findOne({
+                where: {id: userId}
+            })
+            if (!user) {
+                throw HttpError(403, 'There is no such user');
+            }
             const cart = await Cart.create({
-                userId, firstName, lastName, email
+                userId
             });
 
             res.json({
@@ -20,13 +25,12 @@ class CartController {
         }
     }
 
-    static createCartItem = async (req, res, next) => {
+    static addToCart = async (req, res, next) => {
         try {
-            const {cartId, productId, title, description, price, quantity, status} = req.query;
-            const {id} = req.query;
+            const {cartId, productId, price, quantity, status} = req.body;
 
             const product = await Products.findOne({
-                where: {id}
+                where: {id: productId}
             });
 
             if (!product) {
@@ -34,8 +38,9 @@ class CartController {
             }
 
             const cartItem = await CartItem.create({
-                cartId, productId, title, description, price, quantity, status
+                cartId, productId, price, quantity, status
             });
+
             console.log(cartItem)
 
             res.json({
@@ -44,6 +49,30 @@ class CartController {
             })
         } catch (e) {
             next(e);
+        }
+    }
+
+
+    static deleteFromCart = async (req, res, next) => {
+        try {
+            const {id} = req.body;
+
+            const cartItem = await Users.findOne({
+                where: {id}
+            });
+
+            if (!cartItem) {
+                throw HttpError(403, 'There is no such item');
+            }
+
+
+            await cartItem.destroy()
+
+            res.json({
+                status: 'ok'
+            })
+        } catch (e) {
+            next(e)
         }
     }
 
@@ -62,46 +91,35 @@ class CartController {
         }
     }
 
-    static deleteCartItem = async (req, res, next) => {
-        try {
-            const {id} = req.body;
 
-            const cartItem = await CartItem.findOne({
-                where: {id}
+    static cartItemList = async (req, res, next) => {
+        try {
+            const {
+                page = 1, limit = 5
+            } = req.query;
+
+            const {cartId} = req.query;
+
+
+            const cartItem = await CartItem.findAll({
+                where: {id: cartId},
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * +limit,
+                limit: +limit
             })
 
-            await cartItem.destroy();
-
+            const total = await CartItem.count();
+            res.json({
+                status: 'ok',
+                cartItem,
+                total,
+                totalPages: Math.ceil(total / limit)
+            })
         } catch (e) {
             next(e);
         }
     }
 
-
-
-    // static  cartList = async (req, res, next) => {
-    //     try {
-    //         const {
-    //             page = 1, limit = 9
-    //         } = req.query;
-    //
-    //         const cart = await Cart.findAll({
-    //             offset: (+page - 1) * +limit,
-    //             limit: +limit
-    //         });
-    //
-    //         const total = await Cart.count();
-    //         res.json({
-    //             status: 'ok',
-    //             cart,
-    //             total,
-    //             totalPages: Math.ceil(total / limit)
-    //         })
-    //
-    //     }catch (e){
-    //         next(e)
-    //     }
-    // }
 
 }
 

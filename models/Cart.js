@@ -17,19 +17,6 @@ Cart.init({
     userId: {
         type: DataTypes.BIGINT.UNSIGNED,
     },
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        unique: 'email',
-        allowNull: false,
-    },
 }, {
     sequelize,
     modelName: 'cart',
