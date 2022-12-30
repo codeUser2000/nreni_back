@@ -2,34 +2,10 @@ import {Cart, CartItem, Categories, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 class CartController {
-    static cart = async (req, res, next) => {
-        try {
-            console.log(req.body)
-            const {userId} = req.query;
-
-            const user = Users.findOne({
-                where: {id: userId}
-            })
-            if (!user) {
-                throw HttpError(403, 'There is no such user');
-            }
-            const cart = await Cart.create({
-                userId
-            });
-
-            res.json({
-                status: 'ok',
-               // cart
-            })
-        } catch (e) {
-            next(e);
-        }
-    }
-
     static addToCart = async (req, res, next) => {
         try {
             const {cartId, productId, price, quantity, status = 'unsold'} = req.body;
-
+            console.log(req.body)
             const product = await Products.findOne({
                 where: {id: productId}
             });
@@ -66,7 +42,6 @@ class CartController {
                 throw HttpError(403, 'There is no such item');
             }
 
-
             await cartItem.destroy()
 
             res.json({
@@ -77,15 +52,26 @@ class CartController {
         }
     }
 
-    static getCartItem = async (req, res, next) => {
+    static getUserCartItem = async (req, res, next) => {
+        const {
+            userId,
+            page = 1,
+        } = req.query;
         try {
             const cartItem = await CartItem.findAll({
+                where:{id:userId},
                 limit: 10,
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * 10,
             })
-
+            const total = await CartItem.count({
+                where:{id:userId},
+            });
             res.json({
                 status: 'ok',
                 cartItem,
+                total,
+                totalPages: Math.ceil(total / 10)
             })
         } catch (e) {
             next(e);
@@ -101,7 +87,7 @@ class CartController {
 
             const {cartId} = req.query;
 
-
+            console.log(cartId)
             const cartItem = await CartItem.findAll({
                 include: [{
                     model: Products,

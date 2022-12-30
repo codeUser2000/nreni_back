@@ -1,4 +1,4 @@
-import {Blockquote, Categories, Products, Users} from "../models";
+import {Blockquote, Cart, Categories, Products, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
@@ -50,6 +50,10 @@ class UsersController {
             if (user.confirmToken !== token) {
                 throw HttpError(403);
             }
+
+            await Cart.create({
+                userId: user.id
+            })
 
             await Users.update(
                 {
