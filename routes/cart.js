@@ -4,9 +4,8 @@ import authorization from "../middlewares/authorization";
 
 const router = express.Router();
 
-// es masy mi hat naye jisht e te che or stex auth em tve
 router.get('/cartItemList', authorization, CartController.cartItemList);
-router.get('/getUserCartItem', authorization, CartController.getUserCartItem);
+router.get('/getCartItem', authorization, CartController.getCartItem);
 router.post('/addToCart',authorization, CartController.addToCart);
 router.post('/deleteFromCart', CartController.deleteFromCart);
 

@@ -52,21 +52,13 @@ class CartController {
         }
     }
 
-    static getUserCartItem = async (req, res, next) => {
+    static getCartItem = async (req, res, next) => {
         const {
-            userId,
             page = 1,
         } = req.query;
         try {
-            const cartItem = await CartItem.findAll({
-                where:{id:userId},
-                limit: 10,
-                order: [['createdAt', 'desc']],
-                offset: (+page - 1) * 10,
-            })
-            const total = await CartItem.count({
-                where:{id:userId},
-            });
+            const cartItem = await CartItem.findAll()
+            const total = await CartItem.count();
             res.json({
                 status: 'ok',
                 cartItem,
@@ -82,7 +74,7 @@ class CartController {
     static cartItemList = async (req, res, next) => {
         try {
             const {
-                page = 1, limit = 5
+                page = 1, limit = 10
             } = req.query;
 
             const {cartId} = req.query;
@@ -93,13 +85,15 @@ class CartController {
                     model: Products,
                     as: 'product',
                 }],
-                where: {id: cartId},
+                where: {cartId},
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
             })
 
-            const total = await CartItem.count();
+            const total = await CartItem.count({
+                where: {cartId}
+            });
             res.json({
                 status: 'ok',
                 cartItem,

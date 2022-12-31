@@ -1,6 +1,7 @@
 import {DataTypes, Model} from "sequelize";
 import md5 from "md5";
 import sequelize from "../services/sequelize";
+import Cart from "./Cart";
 
 const {PASSWORD_SECRET} = process.env;
 
@@ -66,5 +67,20 @@ Users.init({
     modelName: 'users',
     tableName: 'users'
 });
+
+
+Cart.belongsTo(Users, {
+    foreignKey: 'userId',
+    as: 'cart',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
+
+Users.hasOne(Cart,{
+    foreignKey: 'userId',
+    as: 'user',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
 
 export default Users

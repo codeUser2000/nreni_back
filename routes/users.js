@@ -15,8 +15,5 @@ router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);
 router.post('/delete', adminAuth, UsersController.delete);
 router.post('/deleteSelf', authorization, UsersController.userSelfDelete);
-router.post('/blockquote', UsersController.blockquote);
-router.post('/deleteBlockquote', adminAuth, UsersController.deleteBlockquote);
-router.get('/getBlockquote', UsersController.getBlockquote);
 
 export default router;
