@@ -41,8 +41,8 @@ export default async function authorization(req, res, next) {
         const user = await Users.findOne({
             where:{id:userId}
         })
-        console.log(user)
-        if (!userId) {
+
+        if (!userId || !user) {
             throw HttpError(401, 'Invalid token')
         }
 

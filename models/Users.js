@@ -71,14 +71,14 @@ Users.init({
 
 Cart.belongsTo(Users, {
     foreignKey: 'userId',
-    as: 'cart',
+    as: 'user',
     onUpdate: 'cascade',
     onDelete: 'cascade',
 })
 
 Users.hasOne(Cart,{
     foreignKey: 'userId',
-    as: 'user',
+    as: 'cart',
     onUpdate: 'cascade',
     onDelete: 'cascade',
 })

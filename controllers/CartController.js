@@ -1,11 +1,10 @@
-import {Cart, CartItem, Categories, Products, Users} from "../models";
+import { CartItem, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 class CartController {
     static addToCart = async (req, res, next) => {
         try {
             const {cartId, productId, price, quantity, status = 'unsold'} = req.body;
-            console.log(req.body)
             const product = await Products.findOne({
                 where: {id: productId}
             });
@@ -14,15 +13,39 @@ class CartController {
                 throw HttpError(403, 'There is no such product');
             }
 
-            const cartItem = await CartItem.create({
-                cartId, productId, price, quantity, status
-            });
+            const existProduct = await CartItem.findOne({
+                where: {productId}
+            })
 
-            console.log(cartItem)
+            let cartItem;
+
+            if (existProduct){
+                if (+existProduct.quantity + +quantity > +product.countProduct){
+                    throw HttpError(403, 'There is no such count of this product');
+                }
+                console.log(existProduct.quantity, quantity)
+                 await CartItem.update(
+                    {
+                        quantity: +existProduct.quantity + +quantity,
+                        price: +existProduct.price + price
+                    },
+                    {
+                        where:
+                            {productId},
+                    }
+                )
+            } else{
+                 cartItem = await CartItem.create({
+                    cartId, productId, price, quantity, status
+                });
+            }
+
+
 
             res.json({
                 status: 'ok',
                 cartItem,
+                existProduct
             })
         } catch (e) {
             next(e);
@@ -57,7 +80,12 @@ class CartController {
             page = 1,
         } = req.query;
         try {
-            const cartItem = await CartItem.findAll()
+            const cartItem = await CartItem.findAll({
+                // include: [{
+                //     model: Products,
+                //     as: 'product',
+                // }],
+            })
             const total = await CartItem.count();
             res.json({
                 status: 'ok',

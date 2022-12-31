@@ -59,7 +59,6 @@ class ProductsController {
             }
             let avatar;
             if (!_.isEmpty(file)) {
-                console.log(89878)
                 const oldFile = path.join(__dirname, '../public', product.avatar)
                 if(fs.existsSync(oldFile)){
                     fs.unlinkSync(oldFile)
