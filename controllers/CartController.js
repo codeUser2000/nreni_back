@@ -1,4 +1,4 @@
-import { CartItem, Products, Users} from "../models";
+import {Cart, CartItem, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 class CartController {
@@ -9,8 +9,21 @@ class CartController {
                 where: {id: productId}
             });
 
+            const user = await Cart.findOne({
+                include: [{
+                    model: Users,
+                    as: 'user',
+                }],
+                where: {id: cartId}
+            })
+
+            console.log(user.user.status)
             if (!product) {
                 throw HttpError(403, 'There is no such product');
+            }
+
+            if (user.user.status !== 'active'){
+                throw HttpError(403, 'User Should be activated');
             }
 
             const existProduct = await CartItem.findOne({
@@ -23,7 +36,6 @@ class CartController {
                 if (+existProduct.quantity + +quantity > +product.countProduct){
                     throw HttpError(403, 'There is no such count of this product');
                 }
-                console.log(existProduct.quantity, quantity)
                  await CartItem.update(
                     {
                         quantity: +existProduct.quantity + +quantity,
@@ -44,7 +56,7 @@ class CartController {
 
             res.json({
                 status: 'ok',
-                cartItem,
+                user,
                 existProduct
             })
         } catch (e) {
@@ -55,10 +67,13 @@ class CartController {
 
     static deleteFromCart = async (req, res, next) => {
         try {
-            const {id} = req.body;
+            const {productId, cartId} = req.body;
 
-            const cartItem = await Users.findOne({
-                where: {id}
+            const cartItem = await CartItem.findOne({
+                where: {
+                    id: productId,
+                    cartId
+                }
             });
 
             if (!cartItem) {
@@ -68,7 +83,8 @@ class CartController {
             await cartItem.destroy()
 
             res.json({
-                status: 'ok'
+                status: 'ok',
+                cartItem
             })
         } catch (e) {
             next(e)
