@@ -1,6 +1,8 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 import Products from "./Products";
+import categoryData from "../services/categoryData";
+import Menu from "./Menu";
 
 class Categories extends Model {
 
@@ -22,6 +24,14 @@ Categories.init({
     modelName: 'categories',
     tableName: 'categories',
 });
+
+
+// (async () => {
+//     for (const category of categoryData){
+//         await Categories.create({type: category.type});
+//     }
+//
+// })()
 
 Products.belongsTo(Categories, {
     foreignKey: 'categoryId',

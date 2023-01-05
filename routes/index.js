@@ -5,6 +5,7 @@ import products from './products';
 import categories from "./categories";
 import blockquote from "./blockquote";
 import UsersController from "../controllers/UsersController";
+import others from "./others";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.use('/cart', cart);
 router.use('/products', products);
 router.use('/blockquote', blockquote);
 router.use('/categories', categories);
+router.use('/others', others);
 router.post('/admin', UsersController.adminLogin);
 
 export default router;

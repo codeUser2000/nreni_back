@@ -64,7 +64,6 @@ class CartController {
         }
     }
 
-
     static deleteFromCart = async (req, res, next) => {
         try {
             const {productId, cartId} = req.body;
@@ -96,12 +95,7 @@ class CartController {
             page = 1,
         } = req.query;
         try {
-            const cartItem = await CartItem.findAll({
-                // include: [{
-                //     model: Products,
-                //     as: 'product',
-                // }],
-            })
+            const cartItem = await CartItem.findAll()
             const total = await CartItem.count();
             res.json({
                 status: 'ok',
@@ -114,6 +108,29 @@ class CartController {
         }
     }
 
+    static updateCartItem = async (req, res, next) => {
+        const {
+            productId,
+            count,
+            cartId,
+        } = req.body;
+        try {
+            console.log(
+                productId,
+                count,
+                cartId,)
+            await CartItem.update({
+                quantity: count
+            },{
+                where: {productId, cartId}
+            })
+            res.json({
+                status: 'ok',
+            })
+        } catch (e) {
+            next(e);
+        }
+    }
 
     static cartItemList = async (req, res, next) => {
         try {
