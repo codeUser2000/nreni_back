@@ -15,18 +15,19 @@ export default async function adminAuth(req, res, next) {
             return;
         }
         const token = req.headers.authorization || req.query.token || '';
+        console.log(token)
         let admin;
         try {
             const data = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);
             admin = await Users.findOne({
                 where:{
-                    id:+data.userId,
                     admin:true
                 }
             });
         } catch (e) {}
 
 
+        console.log(admin)
         if (_.isEmpty(admin)) {
             throw HttpError(401, 'Invalid admin token')
         }
