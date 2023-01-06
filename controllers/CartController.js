@@ -22,7 +22,7 @@ class CartController {
                 throw HttpError(403, 'There is no such product');
             }
 
-            if (user.user.status !== 'active'){
+            if (user.user.status !== 'active') {
                 throw HttpError(403, 'User Should be activated');
             }
 
@@ -32,11 +32,11 @@ class CartController {
 
             let cartItem;
 
-            if (existProduct){
-                if (+existProduct.quantity + +quantity > +product.countProduct){
+            if (existProduct) {
+                if (+existProduct.quantity + +quantity > +product.countProduct) {
                     throw HttpError(403, 'There is no such count of this product');
                 }
-                 await CartItem.update(
+                await CartItem.update(
                     {
                         quantity: +existProduct.quantity + +quantity,
                         price: +existProduct.price + price
@@ -46,12 +46,11 @@ class CartController {
                             {productId},
                     }
                 )
-            } else{
-                 cartItem = await CartItem.create({
+            } else {
+                cartItem = await CartItem.create({
                     cartId, productId, price, quantity, status
                 });
             }
-
 
 
             res.json({
@@ -94,6 +93,7 @@ class CartController {
         const {
             page = 1,
         } = req.query;
+
         try {
             const cartItem = await CartItem.findAll()
             const total = await CartItem.count();
@@ -121,7 +121,7 @@ class CartController {
                 cartId,)
             await CartItem.update({
                 quantity: count
-            },{
+            }, {
                 where: {productId, cartId}
             })
             res.json({
@@ -139,7 +139,7 @@ class CartController {
             } = req.query;
 
             const {cartId} = req.query;
-
+            r
             console.log(cartId)
             const cartItem = await CartItem.findAll({
                 include: [{
