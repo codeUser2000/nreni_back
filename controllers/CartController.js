@@ -139,7 +139,7 @@ class CartController {
             } = req.query;
 
             const {cartId} = req.query;
-            r
+
             console.log(cartId)
             const cartItem = await CartItem.findAll({
                 include: [{

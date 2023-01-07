@@ -1,10 +1,10 @@
-import {Blockquote, Cart, CartItem, Categories, Products, Users} from "../models";
+import {Cart, CartItem, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 import jwt from "jsonwebtoken";
 
-const {JWT_SECRET, FRONT_URL} = process.env;
+const {JWT_SECRET} = process.env;
 
 class UsersController {
     static register = async (req, res, next) => {
@@ -67,8 +67,8 @@ class UsersController {
 
 
             res.json({
-                status:'ok'
-        })
+                status: 'ok'
+            })
 
         } catch (e) {
             next(e);
@@ -268,6 +268,12 @@ class UsersController {
                 include: [{
                     model: Cart,
                     as: 'cart',
+                    include: [
+                        {
+                            model: CartItem,
+                            as: 'cartItem',
+                        }
+                    ]
                 }],
             });
 
