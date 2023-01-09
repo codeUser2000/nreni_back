@@ -7,6 +7,7 @@ import sequelize from "../services/sequelize";
 import categories from "../routes/categories";
 import HttpError from "http-errors";
 import _ from 'lodash'
+import http from "http";
 
 class ProductsController {
 
@@ -133,6 +134,33 @@ class ProductsController {
                 products,
                 total,
                 totalPages: Math.ceil(total / 9)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static like = async (req, res, next) => {
+        try {
+            const {id} = req.body;
+
+            const product = await Products.findOne({
+                where: {id}
+            })
+            if(!product){
+                throw HttpError(403,"no such product")
+            }
+            await Products.update(
+                {
+                    like: product.like + 1
+                },
+                {
+                    where: {id}
+                });
+
+            res.json({
+                status: "ok"
             });
 
         } catch (e) {
