@@ -22,6 +22,10 @@ Blockquote.init({
     },
     message: {
         type: DataTypes.TEXT("long"),
+    },
+    view: {
+        type: DataTypes.ENUM("allowed", "not allowed"),
+        allowNull: false,
     }
 }, {
     sequelize,

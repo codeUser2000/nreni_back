@@ -5,10 +5,10 @@ class BlockQuoteController {
 
     static blockquote = async (req, res, next) => {
         try {
-            const {firstName, lastName, message} = req.body;
+            const {firstName, lastName, message, view = "not allowed"} = req.body;
 
             const quote = await Blockquote.create({
-                firstName, lastName, message
+                firstName, lastName, message, view
             });
 
             res.json({
@@ -54,13 +54,54 @@ class BlockQuoteController {
         }
     }
 
-    static getBlockquote = async (req, res, next) => {
+    static getBlockquoteUser = async (req, res, next) => {
+        try {
+
+            const quote = await Blockquote.findAll({
+                where: {view: 'allowed'},
+                limit: 3,
+                order: [['createdAt', 'desc']],
+            });
+
+            res.json({
+                status: 'ok',
+                quote,
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static getBlockquoteAdmin = async (req, res, next) => {
         try {
 
             const quote = await Blockquote.findAll({
                 limit: 10,
                 order: [['createdAt', 'desc']],
             });
+            const total = await Blockquote.count();
+            res.json({
+                status: 'ok',
+                quote,
+                total,
+                totalPages: Math.ceil(total / 9)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static setBlockquoteView = async (req, res, next) => {
+        try {
+            const {id} = req.body;
+            const quote = await Blockquote.update(
+                {view: "allowed"},
+                {
+                    where: {id}
+                }
+            );
 
             res.json({
                 status: 'ok',
