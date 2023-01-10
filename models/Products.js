@@ -47,7 +47,7 @@ Products.init({
     like: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: true,
-        default: 0,
+        defaultValue: 0,
     }
 }, {
     sequelize,
