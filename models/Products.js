@@ -46,7 +46,7 @@ Products.init({
     },
     like: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
+        allowNull: false,
         defaultValue: 0,
     }
 }, {
