@@ -1,9 +1,9 @@
-import {Blockquote, Cart, CartItem, Categories, InformationText, Menu, Products, Translations, Users} from "../models";
+import {Blockquote, Cart, CartItem, Categories, InformationText, Menu, Products, Like, Users} from "../models";
 import menuData from "../services/menuData";
 import categoryData from "../services/categoryData";
 
 async function main() {
-    for (const Model of [Translations, InformationText, Menu, Users, Categories, Products, Cart, CartItem, Blockquote,]) {
+    for (const Model of [InformationText, Menu, Users, Categories, Products, Cart, CartItem, Blockquote,Like,]) {
         await Model.sync({alter: true});
     }
     for (const menu of menuData){

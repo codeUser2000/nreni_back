@@ -40,25 +40,5 @@ Menu.init({
     tableName: 'menu',
 });
 
-// (async () => {
-//     for (const menu of menuData){
-//         await Menu.create({ title: menu.title, link: menu.link, translationEn: menu.translationEn,translationRu: menu.translationRu, translationArm:menu.translationArm});
-//     }
-//
-// })()
-
-// CartItems.belongsTo(Cart, {
-//     foreignKey: 'cartId',
-//     as: 'carts',
-//     onUpdate: 'cascade',
-//     onDelete: 'cascade',
-// });
-//
-// Menu.hasMany(CartItems, {
-//     foreignKey: 'cartId',
-//     as: 'cartItem',
-//     onUpdate: 'cascade',
-//     onDelete: 'cascade',
-// })
 
 export default Menu;
