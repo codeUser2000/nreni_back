@@ -6,7 +6,6 @@ import ProductsController from "../controllers/ProductsController";
 const router = express.Router();
 
 router.get('/menu',  OthersController.getMenu);
-router.post('/like', OthersController.like);
 
 
 export default router;
