@@ -15,27 +15,14 @@ class OthersController {
     }
     static productLike = async (req, res, next) => {
         try {
-            const user = req.headers.authorization;
-            const productId = req.body;
+            const userId = req.userId;
+            const {productId} = req.body;
 
-
-            if (user === false) {
+            if (userId === false) {
                 throw HttpError(403, 'There is no such user. If you want like product, please, register');
             }
 
-            const product = await Like.findOne({
-                where: {productId},
-            })
-
-            if (!product) {
-                throw HttpError(403, 'There is no such product.');
-
-            }
-            const total = await Like.count(
-                {
-                    where: {productId},
-                }
-            );
+            await Like.create({userId, productId})
 
             res.json({
                 status: 'ok',
@@ -46,7 +33,7 @@ class OthersController {
     }
     static likeCount = async (req, res, next) => {
         try {
-            const productId = req.body;
+            const {productId} = req.body;
 
         } catch (e) {
             next(e);
