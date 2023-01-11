@@ -17,7 +17,6 @@ class CartController {
                 where: {id: cartId}
             })
 
-            console.log(user.user.status)
             if (!product) {
                 throw HttpError(403, 'There is no such product');
             }
