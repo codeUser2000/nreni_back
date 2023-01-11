@@ -44,11 +44,6 @@ Products.init({
         type: DataTypes.STRING,
         allowNull: true,
     },
-    like: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false,
-        defaultValue: 0,
-    }
 }, {
     sequelize,
     modelName: 'products',

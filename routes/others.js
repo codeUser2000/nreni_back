@@ -1,13 +1,12 @@
 import express from 'express';
 import OthersController from "../controllers/OthersController";
+import ProductsController from "../controllers/ProductsController";
 
 
 const router = express.Router();
 
 router.get('/menu',  OthersController.getMenu);
-// router.get('/getCartItem',  CartController.getCartItem);
-// router.post('/addToCart', CartController.addToCart);
-// router.post('/updateCount', CartController.updateCartItem);
-// router.post('/deleteFromCart', CartController.deleteFromCart);
+router.post('/like', OthersController.like);
+
 
 export default router;

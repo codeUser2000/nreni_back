@@ -8,7 +8,6 @@ const router = express.Router();
 router.post('/createProducts', uploader.single('avatar'), adminAuth, ProductsController.createProducts);
 router.post('/delete',adminAuth, ProductsController.delete);
 router.post('/update', uploader.single('avatar'), adminAuth, ProductsController.update);
-router.post('/like', ProductsController.like);
 router.get('/products', ProductsController.getProducts);
 router.get('/singleProduct', ProductsController.getSingleProduct);
 export default router;
