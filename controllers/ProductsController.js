@@ -193,10 +193,6 @@ class ProductsController {
                 include: [{
                     model: Categories,
                     as: 'categories',
-                },{
-                    model: Like,
-                    as: 'likeProduct',
-
                 }],
 
                 where: {
