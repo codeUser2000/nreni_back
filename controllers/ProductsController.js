@@ -234,9 +234,16 @@ class ProductsController {
 
     static getSingleProduct = async (req, res, next) => {
         try {
-            const {id} = req.query;
+            const {productId} = req.query;
+            const userId = req.userId;
             const like = await Like.count({
-                where: {productId:id}
+                where: {productId}
+            })
+            const likedUser = await Like.findOne({
+                where: {
+                    userId,
+                    productId
+                }
             })
             const product = await Products.findOne({
                 include: [{
@@ -249,7 +256,8 @@ class ProductsController {
             res.json({
                 status: 'ok',
                 product,
-                like
+                like,
+                likedUser
             });
 
         } catch (e) {
