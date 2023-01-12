@@ -29,6 +29,7 @@ class UsersController {
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
 
+
             res.json({
                 status: 'ok',
                 user
@@ -189,10 +190,10 @@ class UsersController {
 
     static userSelfDelete = async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const userId = req.userId;
 
             const user = await Users.findOne({
-                where: {email}
+                where: {id: userId}
             });
 
             if (!user) {
