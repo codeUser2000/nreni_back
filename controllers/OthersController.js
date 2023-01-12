@@ -23,7 +23,7 @@ class OthersController {
                 throw HttpError(403, 'There is no such user. If you want like product, please, register');
             }
 
-            await Like.create({userId, productId})
+            await Like.create({userId, productId});
 
             res.json({
                 status: 'ok',
