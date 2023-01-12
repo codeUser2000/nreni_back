@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.get('/menu',  OthersController.getMenu);
 router.post('/like', authorization,  OthersController.productLike);
+router.get('/likeGet', authorization,  OthersController.productLike);
+router.post('/likeDelete', authorization,  OthersController.productLike);
 
 
 export default router;
