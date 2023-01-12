@@ -18,6 +18,7 @@ class OthersController {
             const userId = req.userId;
             const {productId} = req.body;
 
+            console.log(userId,productId)
             if (userId === false) {
                 throw HttpError(403, 'There is no such user. If you want like product, please, register');
             }

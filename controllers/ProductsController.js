@@ -1,4 +1,4 @@
-import {Categories, Products, Users} from '../models';
+import {Categories, Like, Products} from '../models';
 import path from "path";
 import fs from "fs";
 import {v4 as uuidV4} from 'uuid';
@@ -7,13 +7,12 @@ import sequelize from "../services/sequelize";
 import categories from "../routes/categories";
 import HttpError from "http-errors";
 import _ from 'lodash'
-import http from "http";
 
 class ProductsController {
 
     static createProducts = async (req, res, next) => {
         try {
-            const {title, description, categoryId, price, discount,countProduct, shop = 'available'} = req.body;
+            const {title, description, categoryId, price, discount, countProduct, shop = 'available'} = req.body;
             const {file} = req;
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
@@ -21,7 +20,14 @@ class ProductsController {
             await imgPromise('../public', file, avatar)
 
             await Products.create({
-                title, description, categoryId: +categoryId, price: +price, discount: +discount, shop, avatar,countProduct
+                title,
+                description,
+                categoryId: +categoryId,
+                price: +price,
+                discount: +discount,
+                shop,
+                avatar,
+                countProduct
             });
 
             const products = await Products.findAll({
@@ -48,7 +54,7 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {title, id, description, categoryId, price, discount, shop = 'available',countProduct} = req.body;
+            const {title, id, description, categoryId, price, discount, shop = 'available', countProduct} = req.body;
             const {file} = req;
             const product = await Products.findOne({
                 where: {id}
@@ -61,7 +67,7 @@ class ProductsController {
             let avatar;
             if (!_.isEmpty(file)) {
                 const oldFile = path.join(__dirname, '../public', product.avatar)
-                if(fs.existsSync(oldFile)){
+                if (fs.existsSync(oldFile)) {
                     fs.unlinkSync(oldFile)
                 }
                 const originalName = file.originalname.replace(/\..+$/, '.jpg');
@@ -71,7 +77,16 @@ class ProductsController {
 
 
             await Products.update(
-                {title, id, description, categoryId, price, countProduct,discount, avatar: avatar ? avatar : product.avatar},
+                {
+                    title,
+                    id,
+                    description,
+                    categoryId,
+                    price,
+                    countProduct,
+                    discount,
+                    avatar: avatar ? avatar : product.avatar
+                },
                 {
                     where: {id},
                 }
@@ -112,7 +127,7 @@ class ProductsController {
             }
 
             const file = path.join(__dirname, '../public', product.avatar)
-            if(fs.existsSync(file)){
+            if (fs.existsSync(file)) {
                 fs.unlinkSync(file)
             }
             await product.destroy()
@@ -126,7 +141,7 @@ class ProductsController {
                 limit: 9,
             })
             const total = await Products.count({
-                where:{}
+                where: {}
             });
 
             res.json({
@@ -141,42 +156,6 @@ class ProductsController {
         }
     }
 
-    static like = async (req, res, next) => {
-        try {
-            const {id, like} = req.body;
-
-            const product = await Products.findOne({
-                where: {id}
-            })
-            if(!product){
-                throw HttpError(403,"no such product")
-            }
-            if(like){
-                await Products.update(
-                    {
-                        like: product.like + 1
-                    },
-                    {
-                        where: {id}
-                    });
-            }else{
-                await Products.update(
-                    {
-                        like: product.like - 1
-                    },
-                    {
-                        where: {id}
-                    });
-            }
-
-            res.json({
-                status: "ok"
-            });
-
-        } catch (e) {
-            next(e);
-        }
-    }
 
     static getProducts = async (req, res, next) => {
         try {
@@ -194,15 +173,15 @@ class ProductsController {
                 raw: true,
             })
             const categories = await Categories.findAll({
-                where:{
-                    type:{
-                        $in : filter.split(',')
+                where: {
+                    type: {
+                        $in: filter.split(',')
                     }
                 }
             })
             let whereOption = {}
             const categoryArrId = []
-            if(filter){
+            if (filter) {
                 categories.map((c) => {
                     categoryArrId.push(c.id)
                 })
@@ -214,6 +193,10 @@ class ProductsController {
                 include: [{
                     model: Categories,
                     as: 'categories',
+                },{
+                    model: Like,
+                    as: 'likeProduct',
+
                 }],
 
                 where: {
@@ -252,17 +235,21 @@ class ProductsController {
     static getSingleProduct = async (req, res, next) => {
         try {
             const {id} = req.query;
+            const like = await Like.count({
+                where: {productId:id}
+            })
             const product = await Products.findOne({
                 include: [{
                     model: Categories,
                     as: 'categories',
                 }],
-                where: {id:+id},
+                where: {id: +id},
             });
 
             res.json({
                 status: 'ok',
                 product,
+                like
             });
 
         } catch (e) {
