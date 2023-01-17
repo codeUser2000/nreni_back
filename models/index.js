@@ -5,5 +5,3 @@ export { default as Products } from './Products';
 export { default as Cart } from './Cart';
 export { default as CartItem } from './CartItems';
 export { default as Blockquote } from './Blockquote';
-export { default as InformationText } from './InformationText';
-export { default as Menu } from './Menu';

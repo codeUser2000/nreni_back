@@ -1,18 +1,7 @@
-import {Cart, CartItem, Like, Menu, Products, Users} from "../models";
+import { Like, } from "../models";
 import HttpError from "http-errors";
 
 class OthersController {
-    static getMenu = async (req, res, next) => {
-        try {
-            const menu = await Menu.findAll();
-            res.json({
-                status: 'ok',
-                menu
-            })
-        } catch (e) {
-            next(e)
-        }
-    }
     static productLike = async (req, res, next) => {
         try {
             const userId = req.userId;

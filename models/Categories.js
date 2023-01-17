@@ -1,9 +1,6 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 import Products from "./Products";
-import categoryData from "../services/categoryData";
-import Menu from "./Menu";
-
 class Categories extends Model {
 
 }

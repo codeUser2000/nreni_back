@@ -62,7 +62,7 @@ class ProductsController {
 
 
             if (!product) {
-                throw HttpError(403);
+                throw HttpError(403, 'There is no such product!');
             }
             let avatar;
             if (!_.isEmpty(file)) {

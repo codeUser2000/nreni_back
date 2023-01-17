@@ -26,7 +26,7 @@ Users.init({
     },
     birthYear: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
+        allowNull: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -42,8 +42,26 @@ Users.init({
     },
     phone: {
         type: DataTypes.CHAR(50),
-        allowNull: false,
+        allowNull: true,
         unique: 'phone',
+    },
+    country: {
+        type: DataTypes.CHAR(30),
+        allowNull: true,
+        unique: 'country',
+    },
+    city: {
+        type: DataTypes.CHAR(50),
+        allowNull: true,
+    },
+    street: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
+    postal: {
+        type: DataTypes.CHAR(25),
+        allowNull: true,
+        unique: 'postal',
     },
     password: {
         type: DataTypes.CHAR(32),
@@ -79,7 +97,7 @@ Cart.belongsTo(Users, {
     onDelete: 'cascade',
 })
 
-Users.hasOne(Cart,{
+Users.hasOne(Cart, {
     foreignKey: 'userId',
     as: 'cart',
     onUpdate: 'cascade',

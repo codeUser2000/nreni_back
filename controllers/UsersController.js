@@ -10,7 +10,7 @@ class UsersController {
     static register = async (req, res, next) => {
         try {
             const {
-                firstName, lastName, birthYear, email, password, phone,
+                firstName, lastName, email, password,
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
@@ -24,7 +24,7 @@ class UsersController {
             const confirmToken = uuidV4();
 
             const user = await Users.create({
-                firstName, lastName, birthYear, email, password, confirmToken, phone
+                firstName, lastName, email, password, confirmToken,
             });
 
             await Email.sendActivationEmail(email, confirmToken, redirectUrl);
@@ -282,6 +282,46 @@ class UsersController {
                 status: 'ok',
                 user
             });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static userAddInfo = async (req, res, next) => {
+        try {
+            const {firstName, lastName, email, phone, birthYear, country, city, street, postal} = req.body;
+            const {userId} = req;
+            const
+                existUser = await Users.findOne({
+                    where: {id: userId}
+                });
+
+            if (!existUser) {
+                throw HttpError(403, 'There is no such user!')
+            }
+
+
+            const user = await Users.update(
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    birthYear,
+                    country,
+                    city,
+                    street,
+                    postal
+                },
+                {
+                    where: {id: userId}
+                }
+            )
+            res.json({
+                status: 'ok',
+                user
+            })
 
         } catch (e) {
             next(e);
