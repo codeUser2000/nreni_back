@@ -1,4 +1,4 @@
-import { Like, } from "../models";
+import {Cart, CartItem, Like, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 class OthersController {

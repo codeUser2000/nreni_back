@@ -114,10 +114,6 @@ class CartController {
             cartId,
         } = req.body;
         try {
-            console.log(
-                productId,
-                count,
-                cartId,)
             await CartItem.update({
                 quantity: count
             }, {
