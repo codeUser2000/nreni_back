@@ -1,5 +1,6 @@
 import {Cart, CartItem, Like, Products, Users} from "../models";
 import HttpError from "http-errors";
+import {Sequelize} from "sequelize";
 
 class OthersController {
     static productLike = async (req, res, next) => {
@@ -21,9 +22,18 @@ class OthersController {
             next(e);
         }
     }
-    static likeCount = async (req, res, next) => {
+    static getLike = async (req, res, next) => {
         try {
             const {productId} = req.body;
+            const like = Like.findAll({
+                attributes: {
+                    include: [[Sequelize.fn("COUNT",Sequelize.col("like.id")), "likesCount"]]
+                },
+            })
+            res.json({
+                status: 'ok',
+                like,
+            })
 
         } catch (e) {
             next(e);

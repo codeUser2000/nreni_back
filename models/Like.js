@@ -17,11 +17,11 @@ Like.init({
     },
     userId: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
+        allowNull: false,
     },
     productId: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
+        allowNull: false,
     }
 }, {
     sequelize,
@@ -49,7 +49,7 @@ Like.belongsTo(Products, {
     onDelete: 'cascade',
 });
 
-Products.hasOne(Like, {
+Products.hasMany(Like, {
     foreignKey: 'productId',
     as: 'likeCount',
     onUpdate: 'cascade',

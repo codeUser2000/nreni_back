@@ -7,6 +7,7 @@ import sequelize from "../services/sequelize";
 import categories from "../routes/categories";
 import HttpError from "http-errors";
 import _ from 'lodash'
+import {Sequelize} from "sequelize";
 
 class ProductsController {
 
@@ -194,7 +195,16 @@ class ProductsController {
                 include: [{
                     model: Categories,
                     as: 'categories',
-                }],
+                }, {
+                    model: Like,
+                    as: 'likeCount',
+                    attributes: {
+                        include: [[Sequelize.fn("COUNT",Sequelize.col("productId")), "productLike"]]
+                    },
+                    separate : true,
+                    group: ["id"],
+                },],
+
 
                 where: {
                     $and: [{price: {$gte: +min}}, {price: {$lte: +max}},],
