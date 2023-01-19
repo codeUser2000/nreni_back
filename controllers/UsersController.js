@@ -292,7 +292,7 @@ class UsersController {
         try {
             const {firstName, lastName, email, phone, birthYear, country, city, street, postal} = req.body;
             const {userId} = req;
-
+            console.log(req.body, userId)
             const existUser = await Users.findOne({
                 where: {id: userId}
             });
@@ -302,7 +302,7 @@ class UsersController {
             }
 
 
-            const user = await Users.update(
+            await Users.update(
                 {
                     firstName,
                     lastName,
@@ -317,11 +317,11 @@ class UsersController {
                 {
                     where: {id: userId}
                 }
+
             );
 
             res.json({
                 status: 'ok',
-                user
             })
 
         } catch (e) {

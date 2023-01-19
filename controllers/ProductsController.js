@@ -169,7 +169,8 @@ class ProductsController {
                 min = 0,
                 max = 9999999999,
                 page = 1,
-                limit = 9
+                limit = 9,
+                searchText = '',
             } = req.query;
 
             const productPrice = await Products.findAll({
@@ -191,6 +192,24 @@ class ProductsController {
                 })
                 whereOption = {categoryId: categoryArrId}
             }
+
+            if (searchText) {
+                whereOption = {
+                    ...whereOption, $or: [
+                        {
+                            title: {
+                                $like: "%" + searchText + "%",
+                            },
+                        },
+                        {
+                            description: {
+                                $like: "%" + searchText + "%",
+                            },
+                        },
+                    ],
+                }
+            }
+
 
 
             const product = await Products.findAll({
