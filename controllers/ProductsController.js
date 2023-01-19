@@ -198,13 +198,11 @@ class ProductsController {
                 }, {
                     model: Like,
                     as: 'likeCount',
-                    attributes: {
-                        include: [[Sequelize.fn("COUNT",Sequelize.col("productId")), "productLike"]]
-                    },
+                    attributes: [[sequelize.fn("COUNT",sequelize.col("productId")), "productLike"]],
                     separate : true,
                     group: ["id"],
-                },],
 
+                },],
 
                 where: {
                     $and: [{price: {$gte: +min}}, {price: {$lte: +max}},],
