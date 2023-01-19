@@ -22,14 +22,16 @@ class OthersController {
             next(e);
         }
     }
-    static getLike = async (req, res, next) => {
+    static productDeleteLike = async (req, res, next) => {
         try {
             const {productId} = req.body;
-            const like = Like.findAll({
-                attributes: {
-                    include: [[Sequelize.fn("COUNT",Sequelize.col("like.id")), "likesCount"]]
-                },
+            const userId = req.userId;
+
+            const like = await Like.findOne({
+                where: {productId, userId}
             })
+
+            await like.destroy();
             res.json({
                 status: 'ok',
                 like,

@@ -7,7 +7,9 @@ import sequelize from "../services/sequelize";
 import categories from "../routes/categories";
 import HttpError from "http-errors";
 import _ from 'lodash'
-import {Sequelize} from "sequelize";
+import jwt from "jsonwebtoken";
+const {JWT_SECRET} = process.env;
+
 
 class ProductsController {
 
@@ -240,6 +242,13 @@ class ProductsController {
     static getSingleProduct = async (req, res, next) => {
         try {
             const {id} = req.query;
+            let userId
+            try {
+                const data = jwt.verify(req.headers.authorization.replace('Bearer ', ''), JWT_SECRET);
+                userId = data.userId;
+            } catch (e) {}
+
+            console.log(userId)
             const product = await Products.findOne({
                 include: [{
                     model: Categories,
@@ -248,9 +257,13 @@ class ProductsController {
                 where: {id: +id},
             });
 
+            const likeCount = await Like.count({where: {productId: id}})
+            const isLiked = await Like.findOne({where:{productId: id, userId}})
             res.json({
                 status: 'ok',
                 product,
+                likeCount,
+                isLiked: !!isLiked
             });
 
         } catch (e) {
