@@ -275,9 +275,12 @@ class ProductsController {
                 }],
                 where: {id: +id},
             });
-
-            const likeCount = await Like.count({where: {productId: id}})
-            const isLiked = await Like.findOne({where:{productId: id, userId}})
+            let likeCount
+            let isLiked
+           if(userId){
+                likeCount = await Like.count({where: {productId: id}})
+                isLiked = await Like.findOne({where:{productId: id, userId}})
+           }
             res.json({
                 status: 'ok',
                 product,
