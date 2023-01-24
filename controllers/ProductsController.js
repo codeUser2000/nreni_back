@@ -244,6 +244,7 @@ class ProductsController {
                 },
             });
 
+
             res.json({
                 status: 'ok',
                 product,

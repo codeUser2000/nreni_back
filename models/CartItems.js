@@ -1,6 +1,7 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 import Products from "./Products";
+import Users from "./Users";
 
 class CartItems extends Model {
 

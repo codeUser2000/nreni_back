@@ -94,7 +94,24 @@ class CartController {
         } = req.query;
 
         try {
-            const cartItem = await CartItem.findAll()
+            const cartItem = await CartItem.findAll(
+                {
+                    include: [{
+                        model: Products,
+                        as: 'product',
+                    },{
+                        model: Cart,
+                        as: 'carts',
+                        include:{
+                            model: Users,
+                            as:'user'
+                        }
+                    }],
+                    order: [['createdAt', 'desc']],
+                    offset: (+page - 1) * 10,
+                    limit: 10
+                }
+            )
             const total = await CartItem.count();
             res.json({
                 status: 'ok',
@@ -133,22 +150,23 @@ class CartController {
                 page = 1, limit = 10
             } = req.query;
 
-            const {cartId} = req.query;
-
-            console.log(cartId)
+            const {userId} = req;
+            const cartId = await Cart.findOne({
+                where: {userId}
+            })
             const cartItem = await CartItem.findAll({
                 include: [{
                     model: Products,
                     as: 'product',
                 }],
-                where: {cartId},
+                where: {cartId: cartId.id},
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
             })
 
             const total = await CartItem.count({
-                where: {cartId}
+                where: {cartId: cartId.id}
             });
             res.json({
                 status: 'ok',
