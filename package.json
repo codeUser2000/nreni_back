@@ -13,8 +13,8 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
-    "esm": "^3.2.25",
     "ejs": "^3.1.8",
+    "esm": "^3.2.25",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
@@ -31,6 +31,7 @@
     "sharp": "^0.31.2",
     "socket.io": "^4.5.3",
     "socketio-jwt": "^4.6.2",
+    "stripe": "^11.7.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

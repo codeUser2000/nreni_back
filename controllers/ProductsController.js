@@ -161,7 +161,6 @@ class ProductsController {
 
 
     static getProducts = async (req, res, next) => {
-        console.log(req.userId)
         try {
             const {
                 lang = 'en',
