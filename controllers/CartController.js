@@ -4,17 +4,22 @@ import HttpError from "http-errors";
 class CartController {
     static addToCart = async (req, res, next) => {
         try {
-            const {cartId, productId, price, quantity, status = 'unsold'} = req.body;
+            const { productId, price, quantity, status = 'unsold'} = req.body;
             const product = await Products.findOne({
                 where: {id: productId}
             });
+
+
+            console.log(req.body)
+            const {userId} = req
+
 
             const user = await Cart.findOne({
                 include: [{
                     model: Users,
                     as: 'user',
                 }],
-                where: {id: cartId}
+                where: {userId}
             })
 
             if (!product) {
@@ -35,10 +40,11 @@ class CartController {
                 if (+existProduct.quantity + +quantity > +product.countProduct) {
                     throw HttpError(403, 'There is no such count of this product');
                 }
+                console.log(+existProduct.price + +price)
                 await CartItem.update(
                     {
                         quantity: +existProduct.quantity + +quantity,
-                        price: +existProduct.price + price
+                        price: +existProduct.price + +price
                     },
                     {
                         where:
@@ -46,12 +52,15 @@ class CartController {
                     }
                 )
             } else {
-                cartItem = await CartItem.create({
-                    cartId, productId, price, quantity, status
+                const cart = await Cart.findOne({
+                    where:{userId}
+                })
+
+                console.log(cart.id)
+                await CartItem.create({
+                    cartId: cart.id, productId, price, quantity, status
                 });
             }
-
-
             res.json({
                 status: 'ok',
                 user,
@@ -128,13 +137,18 @@ class CartController {
         const {
             productId,
             count,
-            cartId,
+            price
         } = req.body;
         try {
+            const {userId} = req
+            const cartId = await Cart.findOne({
+                where: {userId}
+            })
             await CartItem.update({
-                quantity: count
+                quantity: count,
+                price
             }, {
-                where: {productId, cartId}
+                where: {productId, cartId:cartId.id}
             })
             res.json({
                 status: 'ok',
