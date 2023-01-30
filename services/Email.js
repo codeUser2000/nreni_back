@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
 class Email {
 
     static sendActivationEmail(email, token, frontUrl) {
-        console.log(email)
         return transporter.sendMail({
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,
@@ -22,7 +21,6 @@ class Email {
         })
     }
     static sendDropPassword(email) {
-        console.log(email,6776)
         return transporter.sendMail({
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,

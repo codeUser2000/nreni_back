@@ -10,7 +10,6 @@ class CartController {
             });
 
 
-            console.log(req.body)
             const {userId} = req
 
 
@@ -40,7 +39,6 @@ class CartController {
                 if (+existProduct.quantity + +quantity > +product.countProduct) {
                     throw HttpError(403, 'There is no such count of this product');
                 }
-                console.log(+existProduct.price + +price)
                 await CartItem.update(
                     {
                         quantity: +existProduct.quantity + +quantity,
@@ -56,7 +54,6 @@ class CartController {
                     where:{userId}
                 })
 
-                console.log(cart.id)
                 await CartItem.create({
                     cartId: cart.id, productId, price, quantity, status
                 });

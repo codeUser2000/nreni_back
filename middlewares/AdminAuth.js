@@ -15,7 +15,6 @@ export default async function adminAuth(req, res, next) {
             return;
         }
         const token = req.headers.authorization || req.query.token || '';
-        console.log(token)
         let admin;
         try {
             const data = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);
@@ -27,12 +26,10 @@ export default async function adminAuth(req, res, next) {
         } catch (e) {}
 
 
-        console.log(admin)
         if (_.isEmpty(admin)) {
             throw HttpError(401, 'Invalid admin token')
         }
 
-        console.log(admin)
         req.admin = admin;
         next();
     } catch (e) {

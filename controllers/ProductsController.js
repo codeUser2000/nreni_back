@@ -79,6 +79,7 @@ class ProductsController {
                 where: {id}
             });
 
+            console.log(req.body)
 
             if (!product) {
                 throw HttpError(403, 'There is no such product!');
@@ -98,13 +99,16 @@ class ProductsController {
             const categoryId = await Categories.findOne({
                 where: {type: category}
             })
+
+            console.log(categoryId)
             await Products.update(
                 {
                     title,
                     id,
                     description,
                     categoryId: +categoryId.id,
-                    oldPrice,
+                    oldPrice: +oldPrice,
+                    newPrice: +discount ? +oldPrice - +oldPrice * +discount / 100 : +oldPrice,
                     countProduct,
                     discount,
                     avatar: avatar ? avatar : product.avatar
@@ -286,7 +290,6 @@ class ProductsController {
             } catch (e) {
             }
 
-            console.log(userId)
             const product = await Products.findOne({
                 include: [{
                     model: Categories,
