@@ -73,7 +73,7 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {title, id, description, categoryId, oldPrice, discount, shop = 'available', countProduct} = req.body;
+            const {title, id, description, category, oldPrice, discount, shop = 'available', countProduct} = req.body;
             const {file} = req;
             const product = await Products.findOne({
                 where: {id}
@@ -95,12 +95,15 @@ class ProductsController {
             }
 
 
+            const categoryId = await Categories.findOne({
+                where: {type: category}
+            })
             await Products.update(
                 {
                     title,
                     id,
                     description,
-                    categoryId,
+                    categoryId: +categoryId.id,
                     oldPrice,
                     countProduct,
                     discount,
