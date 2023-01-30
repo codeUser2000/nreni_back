@@ -8,6 +8,7 @@ import categories from "../routes/categories";
 import HttpError from "http-errors";
 import _ from 'lodash'
 import jwt from "jsonwebtoken";
+
 const {JWT_SECRET} = process.env;
 
 
@@ -15,14 +16,16 @@ class ProductsController {
 
     static createProducts = async (req, res, next) => {
         try {
-            const {title, description, category, price, discount, countProduct, shop = 'available'} = req.body;
+            const {
+                title,
+                description,
+                categoryId,
+                oldPrice,
+                discount,
+                countProduct,
+                shop = 'available'
+            } = req.body;
             const {file} = req;
-
-            const categoryId = await Categories.findOne({
-                where:{
-                    type:category
-                }
-            })
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
@@ -31,8 +34,9 @@ class ProductsController {
             await Products.create({
                 title,
                 description,
-                categoryId: +categoryId.id,
-                price: +price,
+                categoryId: +categoryId,
+                oldPrice: +oldPrice,
+                newPrice: +discount ? +oldPrice - +oldPrice * +discount / 100 : +oldPrice,
                 discount: +discount,
                 shop,
                 avatar,
@@ -216,7 +220,6 @@ class ProductsController {
             }
 
 
-
             const product = await Products.findAll({
                 include: [{
                     model: Categories,
@@ -224,8 +227,8 @@ class ProductsController {
                 }, {
                     model: Like,
                     as: 'likeCount',
-                    attributes: [[sequelize.fn("COUNT",sequelize.col("productId")), "productLike"]],
-                    separate : true,
+                    attributes: [[sequelize.fn("COUNT", sequelize.col("productId")), "productLike"]],
+                    separate: true,
                     group: ["id"],
 
                 },],
@@ -271,7 +274,8 @@ class ProductsController {
             try {
                 const data = jwt.verify(req.headers.authorization.replace('Bearer ', ''), JWT_SECRET);
                 userId = data.userId;
-            } catch (e) {}
+            } catch (e) {
+            }
 
             console.log(userId)
             const product = await Products.findOne({
@@ -283,10 +287,10 @@ class ProductsController {
             });
             let likeCount
             let isLiked
-           if(userId){
+            if (userId) {
                 likeCount = await Like.count({where: {productId: id}})
-                isLiked = await Like.findOne({where:{productId: id, userId}})
-           }
+                isLiked = await Like.findOne({where: {productId: id, userId}})
+            }
             res.json({
                 status: 'ok',
                 product,

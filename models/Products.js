@@ -29,7 +29,11 @@ Products.init({
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
     },
-    price: {
+    oldPrice: {
+        type: DataTypes.DECIMAL(10,2).UNSIGNED,
+        allowNull: false,
+    },
+    newPrice: {
         type: DataTypes.DECIMAL(10,2).UNSIGNED,
         allowNull: false,
     },
