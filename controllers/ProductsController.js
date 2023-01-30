@@ -15,8 +15,14 @@ class ProductsController {
 
     static createProducts = async (req, res, next) => {
         try {
-            const {title, description, categoryId, price, discount, countProduct, shop = 'available'} = req.body;
+            const {title, description, category, price, discount, countProduct, shop = 'available'} = req.body;
             const {file} = req;
+
+            const categoryId = await Categories.findOne({
+                where:{
+                    type:category
+                }
+            })
 
             const originalName = file.originalname.replace(/\..+$/, '.jpg');
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
@@ -25,7 +31,7 @@ class ProductsController {
             await Products.create({
                 title,
                 description,
-                categoryId: +categoryId,
+                categoryId: +categoryId.id,
                 price: +price,
                 discount: +discount,
                 shop,
