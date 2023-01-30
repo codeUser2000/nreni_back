@@ -19,7 +19,7 @@ class ProductsController {
             const {
                 title,
                 description,
-                categoryId,
+                category,
                 oldPrice,
                 discount,
                 countProduct,
@@ -31,10 +31,16 @@ class ProductsController {
             const avatar = path.join('/img', uuidV4() + '-' + originalName);
             await imgPromise('../public', file, avatar)
 
+            const categoryId = await Categories.findOne({
+                where:{
+                    type:category
+                }
+            })
+
             await Products.create({
                 title,
                 description,
-                categoryId: +categoryId,
+                categoryId: +categoryId.id,
                 oldPrice: +oldPrice,
                 newPrice: +discount ? +oldPrice - +oldPrice * +discount / 100 : +oldPrice,
                 discount: +discount,
