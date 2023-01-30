@@ -73,7 +73,7 @@ class ProductsController {
 
     static update = async (req, res, next) => {
         try {
-            const {title, id, description, categoryId, price, discount, shop = 'available', countProduct} = req.body;
+            const {title, id, description, categoryId, oldPrice, discount, shop = 'available', countProduct} = req.body;
             const {file} = req;
             const product = await Products.findOne({
                 where: {id}
@@ -101,7 +101,7 @@ class ProductsController {
                     id,
                     description,
                     categoryId,
-                    price,
+                    oldPrice,
                     countProduct,
                     discount,
                     avatar: avatar ? avatar : product.avatar
@@ -189,7 +189,7 @@ class ProductsController {
             } = req.query;
 
             const productPrice = await Products.findAll({
-                attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice'], [sequelize.fn('max', sequelize.col('price')), 'maxPrice']],
+                attributes: [[sequelize.fn('min', sequelize.col('newPrice')), 'minPrice'], [sequelize.fn('max', sequelize.col('newPrice')), 'maxPrice']],
                 raw: true,
             })
             const categories = await Categories.findAll({
@@ -240,7 +240,7 @@ class ProductsController {
                 },],
 
                 where: {
-                    $and: [{price: {$gte: +min}}, {price: {$lte: +max}},],
+                    $and: [{newPrice: {$gte: +min}}, {newPrice: {$lte: +max}},],
                     ...whereOption
                 },
                 order: [['createdAt', 'desc']],
@@ -251,8 +251,8 @@ class ProductsController {
             const total = await Products.count({
                 where: {
                     $and: [
-                        {price: {$gte: +min}},
-                        {price: {$lte: +max}},
+                        {newPrice: {$gte: +min}},
+                        {newPrice: {$lte: +max}},
                     ],
                     ...whereOption
                 },
