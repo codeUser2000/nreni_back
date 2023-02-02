@@ -4,13 +4,14 @@ import HttpError from "http-errors";
 class CartController {
     static addToCart = async (req, res, next) => {
         try {
-            const { productId, price, quantity, status = 'unsold'} = req.body;
+            const {productId, price, quantity, status = 'unsold'} = req.body;
             const product = await Products.findOne({
                 where: {id: productId}
             });
 
 
             const {userId} = req
+            console.log(userId)
 
 
             const user = await Cart.findOne({
@@ -20,6 +21,8 @@ class CartController {
                 }],
                 where: {userId}
             })
+
+            console.log(user)
 
             if (!product) {
                 throw HttpError(403, 'There is no such product');
@@ -42,7 +45,7 @@ class CartController {
                 await CartItem.update(
                     {
                         quantity: +existProduct.quantity + +quantity,
-                        price: +existProduct.price + +price
+                        price: +existProduct.newPrice + +price
                     },
                     {
                         where:
@@ -51,7 +54,7 @@ class CartController {
                 )
             } else {
                 const cart = await Cart.findOne({
-                    where:{userId}
+                    where: {userId}
                 })
 
                 await CartItem.create({
@@ -105,12 +108,12 @@ class CartController {
                     include: [{
                         model: Products,
                         as: 'product',
-                    },{
+                    }, {
                         model: Cart,
                         as: 'carts',
-                        include:{
+                        include: {
                             model: Users,
-                            as:'user'
+                            as: 'user'
                         }
                     }],
                     order: [['createdAt', 'desc']],
@@ -145,7 +148,7 @@ class CartController {
                 quantity: count,
                 price
             }, {
-                where: {productId, cartId:cartId.id}
+                where: {productId, cartId: cartId.id}
             })
             res.json({
                 status: 'ok',

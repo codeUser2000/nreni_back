@@ -27,9 +27,14 @@ Payment.init({
         type: DataTypes.DATE,
         allowNull: false,
     },
-    cvv:{
+    cvv: {
         type: DataTypes.INTEGER,
-        allowNull:false,
+        allowNull: false,
+    },
+    paymentStatus: {
+        type: DataTypes.ENUM('pay', 'not pay'),
+        allowNull: false,
+        default: 'not pay',
     }
 }, {
     sequelize,
