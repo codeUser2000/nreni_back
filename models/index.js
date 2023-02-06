@@ -4,4 +4,5 @@ export { default as Categories } from './Categories';
 export { default as Products } from './Products';
 export { default as Cart } from './Cart';
 export { default as CartItem } from './CartItems';
+export { default as Orders } from './Orders';
 export { default as Blockquote } from './Blockquote';

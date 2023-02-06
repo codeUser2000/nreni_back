@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import {Orders} from "../models";
 
 const {STRIPE_SECRET_KEY, FRONT_URL, BACK_URL} = process.env;
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
@@ -7,7 +8,7 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 class PaymentController {
     static checkCustomer = async (req, res, next) => {
         try {
-            const {userId} = req
+            const {userId} = req;
             const customer = await stripe.customers.create({
                 metadata:{
                     userId,
@@ -15,7 +16,9 @@ class PaymentController {
                 }
             })
 
-            console.log(customer)
+
+
+            console.log(req)
             let line_items = req.body.map(data => {
                 return {
                     price_data: {
@@ -48,6 +51,17 @@ class PaymentController {
         try {
             let endpointSecretAida;
 
+            const createOrder = async function (customer, data){
+                const items = JSON.parse(customer.metadata.cart)
+                await Orders.create({
+                    userId:customer.metadata.userId,
+                    customerId: data.customer,
+                    paymentIntentId: data.payment_intent,
+                    products: items,
+                    total: data.amount_total,
+                    paymentStatus: data.payment_status,
+                })
+            }
             // endpointSecretNara = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
             // endpointSecretAida = "whsec_c92f802ba1c75864d7fc7182b2b1c7c9891d53c2407a66c91dfca308b35b2efd";
 
@@ -76,14 +90,11 @@ class PaymentController {
                 console.log(eventType)
 
             }
-            // Handle the event
             if (eventType === 'checkout.session.completed') {
                 stripe.customers.retrieve(data.customer).then((customer) => {
-                    console.log(customer)
-                    console.log(data)
+                    createOrder(customer, data)
                 }).catch(err => console.log(err.message))
             }
-            // Return a 200 response to acknowledge receipt of the event
             res.send().end();
         } catch (e) {
             next(e);

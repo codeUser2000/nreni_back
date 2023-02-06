@@ -17,17 +17,27 @@ Orders.init({
     userId: {
         type: DataTypes.BIGINT.UNSIGNED,
     },
-    productId: {
-        type: DataTypes.BIGINT.UNSIGNED,
+    customerId: {
+        type: DataTypes.STRING,
+    },
+    paymentIntent: {
+        type: DataTypes.STRING,
+    },
+    products: {
+        type: DataTypes.JSON,
     },
     total: {
         type: DataTypes.DECIMAL(10, 2).UNSIGNED,
         allowNull: false,
     },
     deliveryStatus: {
-        type: DataTypes.ENUM('deliver', 'not deliver'),
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'not deliver'
+        defaultValue: 'pending'
+    },
+    paymentStatus: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 }, {
     sequelize,

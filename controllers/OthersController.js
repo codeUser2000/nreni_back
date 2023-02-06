@@ -1,6 +1,7 @@
-import {Cart, CartItem, Like, Products, Users} from "../models";
+import {Cart, CartItem, Categories, Like, Orders, Products, Users} from "../models";
 import HttpError from "http-errors";
 import {Sequelize} from "sequelize";
+import sequelize from "../services/sequelize";
 
 class OthersController {
     static productLike = async (req, res, next) => {
@@ -35,6 +36,29 @@ class OthersController {
                 status: 'ok',
                 like,
             })
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static getOrders = async (req, res, next) => {
+        try {
+            const {page = 1} = req.body
+            const orders = await Orders.findAll({
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * 9,
+                limit: 9
+            });
+
+            const total = await Orders.count();
+
+            res.json({
+                status: 'ok',
+                orders,
+                total,
+                totalPages: Math.ceil(total / 9)
+            });
 
         } catch (e) {
             next(e);
