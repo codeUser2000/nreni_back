@@ -11,7 +11,6 @@ class CartController {
 
 
             const {userId} = req
-            console.log(userId)
 
 
             const user = await Cart.findOne({
@@ -22,7 +21,6 @@ class CartController {
                 where: {userId}
             })
 
-            console.log(user)
 
             if (!product) {
                 throw HttpError(403, 'There is no such product');

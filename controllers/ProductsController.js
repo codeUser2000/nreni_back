@@ -79,7 +79,6 @@ class ProductsController {
                 where: {id}
             });
 
-            console.log(req.body)
 
             if (!product) {
                 throw HttpError(403, 'There is no such product!');
@@ -100,7 +99,6 @@ class ProductsController {
                 where: {type: category}
             })
 
-            console.log(categoryId)
             await Products.update(
                 {
                     title,

@@ -7,8 +7,16 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 class PaymentController {
     static checkCustomer = async (req, res, next) => {
         try {
+            const {userId} = req
+            const customer = await stripe.customers.create({
+                metadata:{
+                    userId,
+                    cart: JSON.stringify(req.body)
+                }
+            })
+
+            console.log(customer)
             let line_items = req.body.map(data => {
-                console.log(BACK_URL + data.product.avatar)
                 return {
                     price_data: {
                         currency: 'usd',
@@ -23,8 +31,9 @@ class PaymentController {
             })
             const session = await stripe.checkout.sessions.create({
                 line_items,
+                customer: customer.id,
                 mode: 'payment',
-                success_url: `${FRONT_URL}shop`,
+                success_url: `${FRONT_URL}profile`,
                 cancel_url: `${FRONT_URL}cart`,
             })
             res.send({
@@ -37,19 +46,20 @@ class PaymentController {
     }
     static webhook = async (req, res, next) => {
         try {
-            let endpointSecret;
+            let endpointSecretAida;
 
-            // endpointSecret = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
+            // endpointSecretNara = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
+            // endpointSecretAida = "whsec_c92f802ba1c75864d7fc7182b2b1c7c9891d53c2407a66c91dfca308b35b2efd";
 
             const sig = req.headers['stripe-signature'];
             let data;
             let eventType;
-            if (endpointSecret) {
+            if (endpointSecretAida) {
 
                 let event;
 
                 try {
-                    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+                    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecretAida);
                     console.log('webhook verified')
                 } catch (err) {
                     console.log(`webhook error: ${err.message}`)
@@ -59,13 +69,19 @@ class PaymentController {
 
                 data = event.data.object;
                 eventType = event.type;
+                console.log(eventType)
             } else {
                 data = req.body.data.object;
                 eventType = req.body.type;
+                console.log(eventType)
+
             }
             // Handle the event
             if (eventType === 'checkout.session.completed') {
-
+                stripe.customers.retrieve(data.customer).then((customer) => {
+                    console.log(customer)
+                    console.log(data)
+                }).catch(err => console.log(err.message))
             }
             // Return a 200 response to acknowledge receipt of the event
             res.send().end();
