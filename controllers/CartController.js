@@ -36,21 +36,21 @@ class CartController {
 
             let cartItem;
 
-            if (existProduct) {
-                if (+existProduct.quantity + +quantity > +product.countProduct) {
-                    throw HttpError(403, 'There is no such count of this product');
-                }
-                await CartItem.update(
-                    {
-                        quantity: +existProduct.quantity + +quantity,
-                        price: +existProduct.newPrice + +price
-                    },
-                    {
-                        where:
-                            {productId},
-                    }
-                )
-            } else {
+            // if (existProduct) {
+            //     if (+existProduct.quantity + +quantity > +product.countProduct) {
+            //         throw HttpError(403, 'There is no such count of this product');
+            //     }
+            //     await CartItem.update(
+            //         {
+            //             quantity: +existProduct.quantity + +quantity,
+            //             price: +existProduct.newPrice + +price
+            //         },
+            //         {
+            //             where:
+            //                 {productId},
+            //         }
+            //     )
+            // } else {
                 const cart = await Cart.findOne({
                     where: {userId}
                 })
@@ -58,7 +58,7 @@ class CartController {
                 await CartItem.create({
                     cartId: cart.id, productId, price, quantity, status
                 });
-            }
+            // }
             res.json({
                 status: 'ok',
                 user,
@@ -144,7 +144,7 @@ class CartController {
             })
             await CartItem.update({
                 quantity: count,
-                price
+                price: price*count
             }, {
                 where: {productId, cartId: cartId.id}
             })
@@ -185,6 +185,38 @@ class CartController {
                 cartItem,
                 total,
                 totalPages: Math.ceil(total / limit)
+            })
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static addToCartFromLocalStorage = async (req, res, next) => {
+        try {
+            const {userId} = req
+            const {data, status = 'unsold'} = req.body;
+
+            const user = await Cart.findOne({
+                include: [{
+                    model: Users,
+                    as: 'user',
+                }],
+                where: {userId}
+            })
+            if (user.user.status !== 'active') {
+                throw HttpError(403, 'User Should be activated');
+            }
+            const cart = await Cart.findOne({
+                where: {userId}
+            })
+            data.map(async (c) => {
+                await CartItem.create({
+                    cartId: cart.id, productId: c.product.id, price:c.price, quantity:c.quantity, status
+                });
+            })
+
+            res.json({
+                status: 'ok',
             })
         } catch (e) {
             next(e);

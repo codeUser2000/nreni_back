@@ -180,6 +180,7 @@ class ProductsController {
         }
     }
 
+
     static getProducts = async (req, res, next) => {
         try {
             const {
