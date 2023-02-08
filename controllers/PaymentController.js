@@ -27,7 +27,7 @@ class PaymentController {
                             name: data.product.title,
                             description: data.product.description,
                         },
-                        unit_amount: 2000,
+                        unit_amount: data.price * 100,
                     },
                     quantity: +data.quantity,
                 }
@@ -83,12 +83,9 @@ class PaymentController {
 
                 data = event.data.object;
                 eventType = event.type;
-                console.log(eventType)
             } else {
                 data = req.body.data.object;
                 eventType = req.body.type;
-                console.log(eventType)
-
             }
             if (eventType === 'checkout.session.completed') {
                 stripe.customers.retrieve(data.customer).then((customer) => {
