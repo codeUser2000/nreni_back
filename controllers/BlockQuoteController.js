@@ -95,17 +95,34 @@ class BlockQuoteController {
 
     static setBlockquoteView = async (req, res, next) => {
         try {
-            const {id} = req.body;
-            const quote = await Blockquote.update(
-                {view: "allowed"},
-                {
-                    where: {id}
-                }
-            );
+            const {id, ev} = req.body;
+            console.log(ev === 'allowed')
+            if(ev === 'allowed'){
+                await Blockquote.update(
+                    {view: "not allowed"},
+                    {
+                        where: {id}
+                    }
+                );
+            }else{
+                await Blockquote.update(
+                    {view: "allowed"},
+                    {
+                        where: {id}
+                    }
+                );
+            }
 
+            const quote = await Blockquote.findAll({
+                limit: 10,
+                order: [['createdAt', 'desc']],
+            });
+            const total = await Blockquote.count();
             res.json({
                 status: 'ok',
                 quote,
+                total,
+                totalPages: Math.ceil(total / 9)
             });
 
         } catch (e) {
