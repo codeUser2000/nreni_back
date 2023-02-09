@@ -2,6 +2,9 @@ import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 import CartItems from "./CartItems";
 import Cart from "./Cart";
+import Products from "./Products";
+import Like from "./Like";
+import Users from "./Users";
 
 class Orders extends Model {
 
@@ -44,6 +47,20 @@ Orders.init({
     modelName: 'orders',
     tableName: 'orders',
 });
+
+// Orders.belongsTo(Users, {
+//     foreignKey: 'userId',
+//     as: 'orders',
+//     onUpdate: 'cascade',
+//     onDelete: 'cascade',
+// });
+//
+// Users.hasMany(Orders, {
+//     foreignKey: 'userId',
+//     as: 'userOrder',
+//     onUpdate: 'cascade',
+//     onDelete: 'cascade',
+// })
 
 
 export default Orders;

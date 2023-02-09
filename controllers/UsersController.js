@@ -1,8 +1,9 @@
-import {Cart, CartItem, Users} from "../models";
+import {Cart, CartItem, Categories, Like, Products, Users} from "../models";
 import HttpError from "http-errors";
 import {v4 as uuidV4} from "uuid";
 import Email from "../services/Email";
 import jwt from "jsonwebtoken";
+import sequelize from "../services/sequelize";
 
 const {JWT_SECRET} = process.env;
 
@@ -85,8 +86,38 @@ class UsersController {
     static list = async (req, res, next) => {
         try {
             const {
-                page = 1, limit = 9
+                page = 1, limit = 9, search=''
             } = req.query;
+
+            let whereOption = {}
+
+            if (search) {
+                whereOption = {
+                    $or: [
+                        {
+                            firstName: {
+                                $like: "%" + search + "%",
+                            },
+                        },
+                        {
+                            lastName: {
+                                $like: "%" + search + "%",
+                            },
+                        },
+                        {
+                            email: {
+                                $like: "%" + search + "%",
+                            },
+                        },
+                        {
+                            id: {
+                                $like: "%" + search + "%",
+                            },
+                        },
+
+                    ],
+                }
+            }
 
             const user = await Users.findAll({
                 include: [{
@@ -98,12 +129,13 @@ class UsersController {
 
                     }],
                 }],
+                where:whereOption,
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
             });
 
-            const total = await Users.count();
+            const total = await Users.count({where: whereOption});
             res.json({
                 status: 'ok',
                 user,
