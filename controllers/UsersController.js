@@ -338,8 +338,6 @@ class UsersController {
             if (!existUser) {
                 throw HttpError(403, 'There is no such user!')
             }
-
-
             await Users.update(
                 {
                     firstName,
