@@ -48,19 +48,19 @@ Orders.init({
     tableName: 'orders',
 });
 
-// Orders.belongsTo(Users, {
-//     foreignKey: 'userId',
-//     as: 'orders',
+// Orders.belongsTo(Products, {
+//     foreignKey: 'productId',
+//     as: 'order',
 //     onUpdate: 'cascade',
 //     onDelete: 'cascade',
 // });
 //
-// Users.hasMany(Orders, {
-//     foreignKey: 'userId',
+// Products.hasMany(Orders, {
+//     foreignKey: 'productId',
 //     as: 'userOrder',
 //     onUpdate: 'cascade',
 //     onDelete: 'cascade',
 // })
-
+//
 
 export default Orders;

@@ -1,21 +1,44 @@
 import Stripe from "stripe";
-import {Orders} from "../models";
+import {Orders, Products} from "../models";
 
 const {STRIPE_SECRET_KEY, FRONT_URL, BACK_URL} = process.env;
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
     apiVersion: '2022-11-15',
 });
+
 class PaymentController {
     static checkCustomer = async (req, res, next) => {
         try {
             const {userId} = req;
             const customer = await stripe.customers.create({
-                metadata:{
+                metadata: {
                     userId,
                     cart: JSON.stringify(req.body)
                 }
             })
-            let line_items = req.body.map(data => {
+            const allData = req.body
+            const productId = [];
+            const final = [];
+
+            allData.map((p) => {
+                productId.push(p.productId)
+                return p;
+            })
+
+
+            const products = await Products.findAll({
+                where: {id: productId}
+            })
+
+            for(let i = 0; i< products.length;i++){
+                final.push({
+                    price: allData[i].price,
+                    quantity: allData[i].quantity,
+                    product: products[i]
+                })
+            }
+
+            let line_items = final.map((data) => {
                 return {
                     price_data: {
                         currency: 'usd',
@@ -27,7 +50,10 @@ class PaymentController {
                     },
                     quantity: +data.quantity,
                 }
+
             })
+
+
             const session = await stripe.checkout.sessions.create({
                 line_items,
                 customer: customer.id,
@@ -47,14 +73,36 @@ class PaymentController {
         try {
             let endpointSecretAida;
 
-            const createOrder = async function (customer, data){
+            const createOrder = async function (customer, data) {
                 const items = JSON.parse(customer.metadata.cart)
+                const productId = [];
+                const final = []
+                items.map((p) => {
+                    productId.push(p.productId)
+                    return p;
+                })
 
+                const products = await Products.findAll({
+                    where: {id: productId}
+                })
+                console.log(items)
+                for(let i = 0; i<products.length ;i++){
+                    console.log(products.length ,items.length)
+                    for(let j = 0; j<products.length ;j++){
+                        if(items[i].productId === products[j].id){
+                            final.push({
+                                price:items[i].price,
+                                quantity:items[i].quantity,
+                                products:products[j]
+                            })
+                        }
+                    }
+                }
                 await Orders.create({
-                    userId:customer.metadata.userId,
+                    userId: customer.metadata.userId,
                     customerId: data.customer,
                     paymentIntentId: data.payment_intent,
-                    products: items,
+                    products: final,
                     total: data.amount_total,
                     paymentStatus: data.payment_status,
                 })
