@@ -26,6 +26,7 @@ class CartController {
                 throw HttpError(403, 'There is no such product');
             }
 
+            console.log(user)
             if (user.user.status !== 'active') {
                 throw HttpError(403, 'User Should be activated');
             }
@@ -36,21 +37,25 @@ class CartController {
 
             let cartItem;
 
-            // if (existProduct) {
-            //     if (+existProduct.quantity + +quantity > +product.countProduct) {
-            //         throw HttpError(403, 'There is no such count of this product');
-            //     }
-            //     await CartItem.update(
-            //         {
-            //             quantity: +existProduct.quantity + +quantity,
-            //             price: +existProduct.newPrice + +price
-            //         },
-            //         {
-            //             where:
-            //                 {productId},
-            //         }
-            //     )
-            // } else {
+
+            if (existProduct) {
+                console.log('if')
+
+                if (+existProduct.quantity + +quantity > +product.countProduct) {
+                    throw HttpError(403, 'There is no such count of this product');
+                }
+                await CartItem.update(
+                    {
+                        quantity: +existProduct.quantity + +quantity,
+                        price: +existProduct.newPrice + +price
+                    },
+                    {
+                        where:
+                            {productId, cartId: user.id},
+                    }
+                )
+            } else {
+                console.log('else')
                 const cart = await Cart.findOne({
                     where: {userId}
                 })
@@ -58,7 +63,7 @@ class CartController {
                 await CartItem.create({
                     cartId: cart.id, productId, price, quantity, status
                 });
-            // }
+            }
             res.json({
                 status: 'ok',
                 user,
@@ -144,7 +149,7 @@ class CartController {
             })
             await CartItem.update({
                 quantity: count,
-                price: price*count
+                price: price * count
             }, {
                 where: {productId, cartId: cartId.id}
             })
@@ -211,7 +216,7 @@ class CartController {
             })
             data.map(async (c) => {
                 await CartItem.create({
-                    cartId: cart.id, productId: c.product.id, price:c.price, quantity:c.quantity, status
+                    cartId: cart.id, productId: c.product.id, price: c.price, quantity: c.quantity, status
                 });
             })
 
