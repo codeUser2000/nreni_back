@@ -15,10 +15,6 @@ class PaymentController {
                     cart: JSON.stringify(req.body)
                 }
             })
-
-
-
-            console.log(req)
             let line_items = req.body.map(data => {
                 return {
                     price_data: {
@@ -53,6 +49,7 @@ class PaymentController {
 
             const createOrder = async function (customer, data){
                 const items = JSON.parse(customer.metadata.cart)
+
                 await Orders.create({
                     userId:customer.metadata.userId,
                     customerId: data.customer,
@@ -74,9 +71,7 @@ class PaymentController {
 
                 try {
                     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecretAida);
-                    console.log('webhook verified')
                 } catch (err) {
-                    console.log(`webhook error: ${err.message}`)
                     res.status(400).send(`Webhook Error: ${err.message}`);
                     return;
                 }

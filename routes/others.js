@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.post('/like', authorization,  OthersController.productLike);
 router.get('/orders', adminAuth,  OthersController.getOrders);
+router.get('/getSingleOrder', authorization,  OthersController.getSingleOrder);
 router.post('/likeDelete', authorization,  OthersController.productDeleteLike);
 
 

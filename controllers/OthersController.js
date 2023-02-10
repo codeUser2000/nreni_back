@@ -64,6 +64,31 @@ class OthersController {
             next(e);
         }
     }
+
+    static getSingleOrder = async (req, res, next) => {
+        try {
+            const {page = 1} = req.body;
+            const {userId} = req;
+            const orders = await Orders.findAll({
+                where:{userId},
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * 9,
+                limit: 9
+            });
+
+            const total = await Orders.count({where:{userId},});
+
+            res.json({
+                status: 'ok',
+                orders,
+                total,
+                totalPages: Math.ceil(total / 9)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default OthersController
