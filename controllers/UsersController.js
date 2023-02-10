@@ -358,8 +358,11 @@ class UsersController {
 
             );
 
+            const updateUser = await Users.findOne({where: {id: userId}})
+
             res.json({
                 status: 'ok',
+                updateUser
             })
 
         } catch (e) {
