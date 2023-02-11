@@ -46,6 +46,10 @@ class OthersController {
         try {
             const {page = 1} = req.body
             const orders = await Orders.findAll({
+                include: [{
+                    model: Users,
+                    as: 'userOrder',
+                }],
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * 9,
                 limit: 9
@@ -71,10 +75,6 @@ class OthersController {
             const {userId} = req;
             const orders = await Orders.findAll({
                 where:{userId},
-                include:[{
-                    model: Products,
-                    as: 'order',
-                }],
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * 9,
                 limit: 9
