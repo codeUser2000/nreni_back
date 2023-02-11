@@ -110,7 +110,7 @@ class PaymentController {
                     status: 'sold out'
                     },
                     {
-                        where: {cartId: cart.id}
+                        where: {cartId: cart.id, status: 'unsold'}
                     })
                 // for (let i = 0; i < products.length; i++) {
                 //     await Products.update({
