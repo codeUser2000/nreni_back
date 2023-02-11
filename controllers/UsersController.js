@@ -25,15 +25,17 @@ class UsersController {
             const confirmToken = uuidV4();
 
             if(status === "active"){
-                await Users.create({
+                const u = await Users.create({
                     firstName, lastName, email, password, status,
                 });
-                console.log(34567)
+                await Cart.create({
+                    userId: u.id
+                })
+
             }else{
                 await Users.create({
                     firstName, lastName, email, password, confirmToken,
                 });
-                console.log(email, confirmToken, redirectUrl)
                 await Email.sendActivationEmail(email, confirmToken, redirectUrl);
             }
 
