@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import {Orders, Products} from "../models";
+import {Cart, CartItem, Orders, Products} from "../models";
 
 const {STRIPE_SECRET_KEY, FRONT_URL, BACK_URL} = process.env;
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
@@ -30,7 +30,7 @@ class PaymentController {
                 where: {id: productId}
             })
 
-            for(let i = 0; i< products.length;i++){
+            for (let i = 0; i < products.length; i++) {
                 final.push({
                     price: allData[i].price,
                     quantity: allData[i].quantity,
@@ -81,19 +81,16 @@ class PaymentController {
                     productId.push(p.productId)
                     return p;
                 })
-
                 const products = await Products.findAll({
                     where: {id: productId}
                 })
-                console.log(items)
-                for(let i = 0; i<products.length ;i++){
-                    console.log(products.length ,items.length)
-                    for(let j = 0; j<products.length ;j++){
-                        if(items[i].productId === products[j].id){
+                for (let i = 0; i < products.length; i++) {
+                    for (let j = 0; j < products.length; j++) {
+                        if (items[i].productId === products[j].id) {
                             final.push({
-                                price:items[i].price,
-                                quantity:items[i].quantity,
-                                products:products[j]
+                                price: items[i].price,
+                                quantity: items[i].quantity,
+                                products: products[j]
                             })
                         }
                     }
@@ -106,6 +103,25 @@ class PaymentController {
                     total: data.amount_total,
                     paymentStatus: data.payment_status,
                 })
+                const cart = await Cart.findOne(
+                    {where: {userId: customer.metadata.userId, }}
+                )
+                await CartItem.update({
+                    status: 'sold out'
+                    },
+                    {
+                        where: {cartId: cart.id}
+                    })
+                // for (let i = 0; i < products.length; i++) {
+                //     await Products.update({
+                //
+                //         },
+                //         {
+                //             where: {id: products[i].id}
+                //         })
+                // }
+
+
             }
             // endpointSecretNara = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
             // endpointSecretAida = "whsec_c92f802ba1c75864d7fc7182b2b1c7c9891d53c2407a66c91dfca308b35b2efd";
@@ -134,7 +150,15 @@ class PaymentController {
                 stripe.customers.retrieve(data.customer).then((customer) => {
                     createOrder(customer, data)
                 }).catch(err => console.log(err.message))
+                // await CartItem.update({
+                //     status
+                //     },
+                //     {
+                //         where: {id: }
+                //     })
             }
+
+
             res.send().end();
         } catch (e) {
             next(e);
