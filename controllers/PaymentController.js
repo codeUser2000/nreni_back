@@ -32,11 +32,12 @@ class PaymentController {
 
             for (let i = 0; i < products.length; i++) {
                 final.push({
-                    price: allData[i].price,
+                    price: products[i].newPrice,
                     quantity: allData[i].quantity,
                     product: products[i]
                 })
             }
+            console.log(allData)
 
             let line_items = final.map((data) => {
                 return {

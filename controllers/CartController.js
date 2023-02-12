@@ -100,42 +100,6 @@ class CartController {
         }
     }
 
-    static getCartItem = async (req, res, next) => {
-        const {
-            page = 1,
-        } = req.query;
-
-        try {
-            const cartItem = await CartItem.findAll(
-                {
-                    include: [{
-                        model: Products,
-                        as: 'product',
-                    }, {
-                        model: Cart,
-                        as: 'carts',
-                        include: {
-                            model: Users,
-                            as: 'user'
-                        }
-                    }],
-                    order: [['createdAt', 'desc']],
-                    offset: (+page - 1) * 10,
-                    limit: 10
-                }
-            )
-            const total = await CartItem.count();
-            res.json({
-                status: 'ok',
-                cartItem,
-                total,
-                totalPages: Math.ceil(total / 10)
-            })
-        } catch (e) {
-            next(e);
-        }
-    }
-
     static updateCartItem = async (req, res, next) => {
         const {
             productId,
@@ -176,7 +140,7 @@ class CartController {
                     model: Products,
                     as: 'product',
                 }],
-                where: {cartId: cartId.id},
+                where: {cartId: cartId.id, status:'unsold'},
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
@@ -227,6 +191,45 @@ class CartController {
             next(e);
         }
     }
+
+    // static getCartItem = async (req, res, next) => {
+    //     const {
+    //         page = 1,
+    //     } = req.query;
+    //
+    //     try {
+    //         const cartItem = await CartItem.findAll(
+    //             {
+    //                 where:{
+    //                     status: 'unsold'
+    //                 },
+    //                 include: [{
+    //                     model: Products,
+    //                     as: 'product',
+    //                 }, {
+    //                     model: Cart,
+    //                     as: 'carts',
+    //                     include: {
+    //                         model: Users,
+    //                         as: 'user'
+    //                     }
+    //                 }],
+    //                 order: [['createdAt', 'desc']],
+    //                 offset: (+page - 1) * 10,
+    //                 limit: 10
+    //             }
+    //         )
+    //         const total = await CartItem.count();
+    //         res.json({
+    //             status: 'ok',
+    //             cartItem,
+    //             total,
+    //             totalPages: Math.ceil(total / 10)
+    //         })
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
 
 }
 
