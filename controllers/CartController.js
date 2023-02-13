@@ -32,7 +32,7 @@ class CartController {
             }
 
             const existProduct = await CartItem.findOne({
-                where: {productId}
+                where: {productId, cartId:user.id}
             })
 
             let cartItem;

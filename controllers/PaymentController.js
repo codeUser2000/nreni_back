@@ -37,7 +37,6 @@ class PaymentController {
                     product: products[i]
                 })
             }
-            console.log(allData)
 
             let line_items = final.map((data) => {
                 return {

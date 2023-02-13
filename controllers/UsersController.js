@@ -183,8 +183,12 @@ class UsersController {
                 throw HttpError(403, "Password or login is wrong");
             }
 
-            if (user.status !== "active") {
+            if (user.status === "pending") {
                 throw HttpError(403, "You haven't confirmed your account");
+            }
+
+            if (user.status === "deleted") {
+                throw HttpError(403, "You are blocked");
             }
             const token = jwt.sign({userId: user.id}, JWT_SECRET);
 
@@ -290,7 +294,11 @@ class UsersController {
             }
 
 
-            await user.destroy()
+            await Users.update({
+                status: 'deleted'
+            },{
+                where: {email}
+            })
 
             res.json({
                 status: 'ok',
@@ -306,7 +314,7 @@ class UsersController {
             const {userId} = req;
 
             const user = await Users.findOne({
-                where: {id: userId},
+                where: {id: userId, status:'active'},
                 include: [{
                     model: Cart,
                     as: 'cart',

@@ -41,7 +41,47 @@ class OthersController {
             next(e);
         }
     }
+    static setOrderStatus = async (req, res, next) => {
+        try {
+            const {page = 1, id, status } = req.body
 
+            if(status === 'sent'){
+                await Orders.update({
+                    deliveryStatus: 'pending'
+                },{
+                    where:{id, deliveryStatus:'sent'},
+                });
+            }else{
+                await Orders.update({
+                    deliveryStatus: 'sent'
+                },{
+                    where:{id, deliveryStatus:'pending'},
+                });
+            }
+
+            const orders = await Orders.findAll({
+                include: [{
+                    model: Users,
+                    as: 'userOrder',
+                }],
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * 9,
+                limit: 9
+            });
+
+            const total = await Orders.count();
+
+            res.json({
+                status: 'ok',
+                orders,
+                total,
+                totalPages: Math.ceil(total / 9)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
     static getOrders = async (req, res, next) => {
         try {
             const {page = 1} = req.body
