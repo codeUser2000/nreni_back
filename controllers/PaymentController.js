@@ -37,7 +37,19 @@ class PaymentController {
                     product: products[i]
                 })
             }
+            console.log(final)
 
+            for (let i = 0; i < final.length; i++) {
+               try{ await Products.update({
+                       countProduct: +final[i].product.countProduct - final[i].quantity
+                   },
+                   {
+                       where: {id: final[i].product.id}
+                   })
+               }catch (e) {
+                   console.log(e,99)
+               }
+            }
             let line_items = final.map((data) => {
                 return {
                     price_data: {
@@ -81,6 +93,7 @@ class PaymentController {
                     productId.push(p.productId)
                     return p;
                 })
+                console.log()
                 const products = await Products.findAll({
                     where: {id: productId}
                 })
@@ -112,15 +125,15 @@ class PaymentController {
                     {
                         where: {cartId: cart.id, status: 'unsold'}
                     })
-                console.log(final[0].products)
-                for (let i = 0; i < final.length; i++) {
-                    await Products.update({
-                            countProduct: +products.countProduct - final[i].quantity
-                        },
-                        {
-                            where: {id: final[i].products.id}
-                        })
-                }
+                //
+                // for (let i = 0; i < final.length; i++) {
+                //     await Products.update({
+                //             countProduct: +final[i].products.countProduct - final[i].quantity
+                //         },
+                //         {
+                //             where: {id: final[i].products.id}
+                //         })
+                // }
 
 
             }

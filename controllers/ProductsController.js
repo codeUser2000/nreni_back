@@ -245,7 +245,7 @@ class ProductsController {
 
                 where: {
                     $and: [{newPrice: {$gte: +min}}, {newPrice: {$lte: +max}},],
-                    ...whereOption
+                    ...whereOption, countProduct : {$gt: 0}
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
