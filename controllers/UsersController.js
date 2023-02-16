@@ -152,7 +152,8 @@ class UsersController {
 
     static forgetPass = async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const {email, isDevice = false} = req.body;
+            console.log(req.body,233)
             const user = await Users.findOne({
                 where: {email}
             });
@@ -160,8 +161,18 @@ class UsersController {
             if (!user) {
                 throw HttpError(403, "We dont have such user");
             }
+            if(isDevice){
+                const number = Math.floor(100000 + Math.random() * 900000)
+                await Users.update({
+                    confirmToken:number,
+                },{
+                    where: {email}
+                });
+                await Email.sendDropPasswordDevice(email, number);
 
-            await Email.sendDropPassword(email);
+            }else{
+                await Email.sendDropPassword(email);
+            }
 
             res.json({
                 status: 'ok',
@@ -203,7 +214,7 @@ class UsersController {
         }
     }
 
-    static newPassword = async (req, res, next) => {
+    static newPassword = async (req, res, next) =>  {
         try {
             const {email, password} = req.body;
             const user = await Users.findOne({
@@ -223,6 +234,51 @@ class UsersController {
                 }
             );
 
+            res.json({
+                status: 'ok',
+                user
+            });
+
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static newPasswordDeviceConfirm = async (req, res, next) => {
+        try {
+            const {confirmToken} = req.query;
+            const user = await Users.findOne({
+                where: {confirmToken}
+            });
+            if (!user) {
+                throw HttpError(403);
+            }
+
+            res.json({
+                status: 'ok',
+                user
+            });
+
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static newPasswordDevice = async (req, res, next) => {
+        try {
+            const {password, email} = req.body;
+            const user = await Users.findOne({
+                where: {email}
+            });
+            if (!user) {
+                throw HttpError(403);
+            }
+
+            await Users.update({
+                password
+            }, {
+                where: {email}
+            })
             res.json({
                 status: 'ok',
                 user

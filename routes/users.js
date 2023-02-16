@@ -15,6 +15,8 @@ router.post('/addresses', authorization, UsersController.userAddInfo);
 router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);
+router.post('/newPasswordDevice', UsersController.newPasswordDevice);
+router.get('/newPasswordDevice', UsersController.newPasswordDeviceConfirm);
 router.post('/delete', adminAuth, UsersController.delete);
 router.post('/deleteSelf', authorization, UsersController.userSelfDelete);
 

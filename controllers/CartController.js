@@ -26,13 +26,12 @@ class CartController {
                 throw HttpError(403, 'There is no such product');
             }
 
-            console.log(user)
             if (user.user.status !== 'active') {
                 throw HttpError(403, 'User Should be activated');
             }
 
             const existProduct = await CartItem.findOne({
-                where: {productId, cartId:user.id}
+                where: {productId, cartId: user.id, status: 'unsold'}
             })
 
             let cartItem;
@@ -106,6 +105,7 @@ class CartController {
             count,
             price
         } = req.body;
+
         try {
             const {userId} = req
             const cartId = await Cart.findOne({
@@ -140,7 +140,7 @@ class CartController {
                     model: Products,
                     as: 'product',
                 }],
-                where: {cartId: cartId.id, status:'unsold'},
+                where: {cartId: cartId.id, status: 'unsold'},
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit
@@ -178,14 +178,50 @@ class CartController {
             const cart = await Cart.findOne({
                 where: {userId}
             })
-            data.map(async (c) => {
-                await CartItem.create({
-                    cartId: cart.id, productId: c.product.id, price: c.price, quantity: c.quantity, status
-                });
+
+            let dataIdArr = [];
+
+            data.map((d) => {
+                dataIdArr.push(d.product.id)
             })
+
+            const isExist = await CartItem.findAll({
+                where: {productId: dataIdArr, status: 'unsold'},
+                order: [['createdAt', 'desc']],
+            })
+
+            if (isExist.length) {
+                const cartItem = await CartItem.findAll({
+                    where: {cartId: cart.id, status: 'unsold'},
+                    order: [['createdAt', 'desc']],
+                })
+                for (let i = 0; i < cartItem.length; i++) {
+                    for (let j = 0; j < data.length; j++) {
+                        if (cartItem[i].productId === data[j].product.id) {
+                            console.log(6789)
+                            await CartItem.update(
+                                {
+                                    quantity: +cartItem[i].quantity + +data[j].quantity,
+                                    price: +cartItem[i].price + +data[j].price
+                                },
+                                {
+                                    where: {id: +cartItem[i].id, status: 'unsold'}
+                                })
+                        }
+                    }
+                }
+            } else {
+                data.map(async (c) => {
+                    await CartItem.create({
+                        cartId: cart.id, productId: c.product.id, price: c.price, quantity: c.quantity, status
+                    });
+                })
+            }
+
 
             res.json({
                 status: 'ok',
+                isExist
             })
         } catch (e) {
             next(e);

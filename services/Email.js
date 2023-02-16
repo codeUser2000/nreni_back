@@ -28,6 +28,15 @@ class Email {
             html: `<a href="${FRONT_URL}new-password?email=${email}">Drop Password</a>`
         })
     }
+    static sendDropPasswordDevice(email, code) {
+        console.log(55)
+        return transporter.sendMail({
+            from: '"Nreni" <nreniShop@yandex.ru>',
+            to: email,
+            subject: 'Drop Password',
+                html: `<p>Your code ${code}</p>`
+        })
+    }
 }
 
 export default Email
