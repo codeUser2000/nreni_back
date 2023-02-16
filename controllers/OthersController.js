@@ -108,7 +108,6 @@ class OthersController {
             next(e);
         }
     }
-
     static getSingleOrder = async (req, res, next) => {
         try {
             const {page = 1} = req.body;
@@ -120,7 +119,7 @@ class OthersController {
                 limit: 9
             });
 
-            const total = await Orders.count({where:{userId},});
+            const total = await Orders.count({where:{userId}});
 
             res.json({
                 status: 'ok',

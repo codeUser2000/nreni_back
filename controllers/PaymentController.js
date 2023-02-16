@@ -112,14 +112,15 @@ class PaymentController {
                     {
                         where: {cartId: cart.id, status: 'unsold'}
                     })
-                // for (let i = 0; i < products.length; i++) {
-                //     await Products.update({
-                //
-                //         },
-                //         {
-                //             where: {id: products[i].id}
-                //         })
-                // }
+                console.log(final[0].products)
+                for (let i = 0; i < final.length; i++) {
+                    await Products.update({
+                            countProduct: +products.countProduct - final[i].quantity
+                        },
+                        {
+                            where: {id: final[i].products.id}
+                        })
+                }
 
 
             }
