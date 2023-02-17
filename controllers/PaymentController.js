@@ -1,5 +1,7 @@
 import Stripe from "stripe";
 import {Cart, CartItem, Orders, Products} from "../models";
+import HttpError from "http-errors";
+
 
 const {STRIPE_SECRET_KEY, FRONT_URL, BACK_URL} = process.env;
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
@@ -37,18 +39,29 @@ class PaymentController {
                     product: products[i]
                 })
             }
-            console.log(final)
+            let c = []
 
             for (let i = 0; i < final.length; i++) {
-               try{ await Products.update({
-                       countProduct: +final[i].product.countProduct - final[i].quantity
-                   },
-                   {
-                       where: {id: final[i].product.id}
-                   })
-               }catch (e) {
-                   console.log(e,99)
-               }
+                if(+final[i].product.countProduct - final[i].quantity >= 0){
+                    await Products.update({
+                            countProduct: +final[i].product.countProduct - final[i].quantity
+                        },
+                        {
+                            where: {id: final[i].product.id}
+                        })
+                    c.push(final[i])
+                }else{
+                    for (let j = 0; j < c.length; j++){
+                        await Products.update({
+                                countProduct: +c[j].product.countProduct
+                            },
+                            {
+                                where: {id: c[j].product.id}
+                            })
+                    }
+                    console.log(c)
+                    throw HttpError(403, `${final[i].product.title} has already been bought`)
+                }
             }
             let line_items = final.map((data) => {
                 return {
