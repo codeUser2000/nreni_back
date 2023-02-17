@@ -339,7 +339,7 @@ class UsersController {
 
     static delete = async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const {email, status} = req.body;
 
             const user = await Users.findOne({
                 where: {email}
@@ -349,12 +349,19 @@ class UsersController {
                 throw HttpError(403, 'There is no such user');
             }
 
-
-            await Users.update({
-                status: 'deleted'
-            },{
-                where: {email}
-            })
+            if(status === 'deleted'){
+                await Users.update({
+                    status: 'active'
+                },{
+                    where: {email}
+                })
+            }else{
+                await Users.update({
+                    status: 'deleted'
+                },{
+                    where: {email}
+                })
+            }
 
             res.json({
                 status: 'ok',
