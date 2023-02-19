@@ -53,6 +53,8 @@ class PaymentController {
                     throw HttpError(403, `${final[i].product.title} has already been bought`)
                 }
             }
+            console.log(products, 'check')
+
             let line_items = final.map((data) => {
                 return {
                     price_data: {
@@ -76,16 +78,7 @@ class PaymentController {
                 success_url: `${FRONT_URL}profile`,
                 cancel_url: `${FRONT_URL}card`,
             })
-            for (let i = 0; i < final.length; i++) {
-                if (+final[i].product.countProduct - final[i].quantity >= 0) {
-                    await Products.update({
-                            countProduct: +final[i].product.countProduct - final[i].quantity
-                        },
-                        {
-                            where: {id: final[i].product.id}
-                        })
-                }
-            }
+
             res.send({
                 status: 'ok',
                 url: session.url
@@ -106,10 +99,11 @@ class PaymentController {
                     productId.push(p.productId)
                     return p;
                 })
-                console.log()
                 const products = await Products.findAll({
                     where: {id: productId}
                 })
+                console.log(products, 'web')
+
                 for (let i = 0; i < products.length; i++) {
                     for (let j = 0; j < products.length; j++) {
                         if (items[i].productId === products[j].id) {
@@ -119,6 +113,16 @@ class PaymentController {
                                 products: products[j]
                             })
                         }
+                    }
+                }
+                for (let i = 0; i < final.length; i++) {
+                    if (+final[i].products.countProduct - final[i].quantity >= 0) {
+                        await Products.update({
+                                countProduct: +final[i].products.countProduct - final[i].quantity
+                            },
+                            {
+                                where: {id: final[i].products.id}
+                            })
                     }
                 }
                 await Orders.create({
@@ -138,17 +142,6 @@ class PaymentController {
                     {
                         where: {cartId: cart.id, status: 'unsold'}
                     })
-                //
-                // for (let i = 0; i < final.length; i++) {
-                //     await Products.update({
-                //             countProduct: +final[i].products.countProduct - final[i].quantity
-                //         },
-                //         {
-                //             where: {id: final[i].products.id}
-                //         })
-                // }
-
-
             }
             // endpointSecretNara = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
             // endpointSecretAida = "whsec_c92f802ba1c75864d7fc7182b2b1c7c9891d53c2407a66c91dfca308b35b2efd";
