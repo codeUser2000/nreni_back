@@ -110,7 +110,7 @@ class OthersController {
     }
     static getSingleOrder = async (req, res, next) => {
         try {
-            const {page = 1} = req.body;
+            const {page = 1} = req.query;
             const {userId} = req;
             const orders = await Orders.findAll({
                 where:{userId},

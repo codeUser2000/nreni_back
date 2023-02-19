@@ -11,7 +11,7 @@ router.post('/register', validate(usersRegisterSchema), UsersController.register
 router.post('/confirm', UsersController.confirm);
 router.get('/list', adminAuth, UsersController.list);
 router.get('/profile', authorization, UsersController.userProfile);
-router.post('/addresses', authorization, UsersController.userAddInfo);
+router.post('/addresses', authorization,validate(usersRegisterSchema), UsersController.userAddInfo);
 router.post('/login', UsersController.login);
 router.post('/forget', UsersController.forgetPass);
 router.post('/newPassword', UsersController.newPassword);

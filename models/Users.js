@@ -48,7 +48,6 @@ Users.init({
     country: {
         type: DataTypes.CHAR(30),
         allowNull: true,
-        unique: 'country',
     },
     city: {
         type: DataTypes.CHAR(50),
@@ -61,7 +60,6 @@ Users.init({
     postal: {
         type: DataTypes.CHAR(25),
         allowNull: true,
-        unique: 'postal',
     },
     password: {
         type: DataTypes.CHAR(32),

@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import {Cart, CartItem, Orders, Products} from "../models";
+import {Cart, CartItem, Orders, Products, Users} from "../models";
 import HttpError from "http-errors";
 
 
@@ -32,6 +32,13 @@ class PaymentController {
                 where: {id: productId}
             })
 
+            const user = await Users.findOne({
+                where: {id: userId}
+            })
+
+            if (!user.birthYear || !user.phone || !user.country || !user.city || !user.street || !user.postal) {
+                throw HttpError(403, 'You should add more information in Add New addresses')
+            }
             for (let i = 0; i < products.length; i++) {
                 final.push({
                     price: products[i].newPrice,
@@ -42,24 +49,7 @@ class PaymentController {
             let c = []
 
             for (let i = 0; i < final.length; i++) {
-                if(+final[i].product.countProduct - final[i].quantity >= 0){
-                    await Products.update({
-                            countProduct: +final[i].product.countProduct - final[i].quantity
-                        },
-                        {
-                            where: {id: final[i].product.id}
-                        })
-                    c.push(final[i])
-                }else{
-                    for (let j = 0; j < c.length; j++){
-                        await Products.update({
-                                countProduct: +c[j].product.countProduct
-                            },
-                            {
-                                where: {id: c[j].product.id}
-                            })
-                    }
-                    console.log(c)
+                if (+final[i].product.countProduct - final[i].quantity < 0) {
                     throw HttpError(403, `${final[i].product.title} has already been bought`)
                 }
             }
@@ -84,8 +74,18 @@ class PaymentController {
                 customer: customer.id,
                 mode: 'payment',
                 success_url: `${FRONT_URL}profile`,
-                cancel_url: `${FRONT_URL}cart`,
+                cancel_url: `${FRONT_URL}card`,
             })
+            for (let i = 0; i < final.length; i++) {
+                if (+final[i].product.countProduct - final[i].quantity >= 0) {
+                    await Products.update({
+                            countProduct: +final[i].product.countProduct - final[i].quantity
+                        },
+                        {
+                            where: {id: final[i].product.id}
+                        })
+                }
+            }
             res.send({
                 status: 'ok',
                 url: session.url
@@ -130,10 +130,10 @@ class PaymentController {
                     paymentStatus: data.payment_status,
                 })
                 const cart = await Cart.findOne(
-                    {where: {userId: customer.metadata.userId, }}
+                    {where: {userId: customer.metadata.userId,}}
                 )
                 await CartItem.update({
-                    status: 'sold out'
+                        status: 'sold out'
                     },
                     {
                         where: {cartId: cart.id, status: 'unsold'}

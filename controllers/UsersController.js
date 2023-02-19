@@ -247,12 +247,15 @@ class UsersController {
     static newPasswordDeviceConfirm = async (req, res, next) => {
         try {
             const {confirmToken} = req.query;
-            const user = await Users.findOne({
+            const user = await Users.update({
+                confirmToken: null
+            },{
                 where: {confirmToken}
             });
             if (!user) {
                 throw HttpError(403);
             }
+
 
             res.json({
                 status: 'ok',
