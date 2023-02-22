@@ -9,5 +9,6 @@ router.post('/createProducts', uploader.single('avatar'), adminAuth, ProductsCon
 router.post('/delete',adminAuth, ProductsController.delete);
 router.post('/update', uploader.single('avatar'), adminAuth, ProductsController.update);
 router.get('/products', ProductsController.getProducts);
+router.get('/productsAdmin', adminAuth, ProductsController.getProductsAdmin);
 router.get('/singleProduct', ProductsController.getSingleProduct);
 export default router;

@@ -274,23 +274,88 @@ class ProductsController {
                 },
             });
 
-            product.map( async (product, index.count({
+            const products = product.map(x => x.get({ plain: true }))
+            for (const project of products) {
+                project.like = await Like.count({
                     where: {
-                        productId: product.id
+                        productId: project.id
                     }
                 })
-
-                product.like = count;
-                return product
-            })
+            }
 
             res.json({
                 status: 'ok',
-                product,
+                products,
                 categories,
                 productPrice,
                 total,
                 totalPages: Math.ceil(total / limit)
+            });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+    static getProductsAdmin = async (req, res, next) => {
+        try {
+            const {
+                page = 1,
+                searchText = '',
+            } = req.query;
+
+            let whereOption = {}
+
+            if (searchText) {
+                whereOption = {
+                    ...whereOption, $or: [
+                        {
+                            title: {
+                                $like: "%" + searchText + "%",
+                            },
+                        },
+                        {
+                            description: {
+                                $like: "%" + searchText + "%",
+                            },
+                        },
+                    ],
+                }
+            }
+
+
+            const product = await Products.findAll({
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
+                where: {
+                    ...whereOption,
+                },
+                order: [['createdAt', 'desc']],
+                offset: (+page - 1) * 9,
+                limit: 9,
+            });
+
+            const total = await Products.count({
+                where: {
+                    ...whereOption
+                },
+            });
+
+            const products = product.map(x => x.get({ plain: true }))
+            for (const project of products) {
+                project.like = await Like.count({
+                    where: {
+                        productId: project.id
+                    }
+                })
+            }
+
+            res.json({
+                status: 'ok',
+                products,
+                total,
+                totalPages: Math.ceil(total / 9)
             });
 
         } catch (e) {
