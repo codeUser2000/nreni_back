@@ -41,7 +41,7 @@ class PaymentController {
             }
             for (let i = 0; i < products.length; i++) {
                 final.push({
-                    price: products[i].newPrice,
+                    price: Math.round((+products[i].newPrice + Number.EPSILON) * 100) / 100,
                     quantity: allData[i].quantity,
                     product: products[i]
                 })
@@ -56,6 +56,7 @@ class PaymentController {
             console.log(products, 'check')
 
             let line_items = final.map((data) => {
+                console.log(data)
                 return {
                     price_data: {
                         currency: 'usd',
@@ -63,7 +64,7 @@ class PaymentController {
                             name: data.product.title,
                             description: data.product.description,
                         },
-                        unit_amount: data.price * 100,
+                        unit_amount: parseInt(data.price * 100),
                     },
                     quantity: +data.quantity,
                 }
