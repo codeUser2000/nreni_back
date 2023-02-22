@@ -29,31 +29,5 @@ Like.init({
     tableName: 'like',
 });
 
-Like.belongsTo(Users, {
-    foreignKey: 'userId',
-    as: 'userLike',
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-});
-
-Users.hasMany(Like, {
-    foreignKey: 'userId',
-    as: 'like',
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-})
-Like.belongsTo(Products, {
-    foreignKey: 'productId',
-    as: 'productLike',
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-});
-
-Products.hasMany(Like, {
-    foreignKey: 'productId',
-    as: 'likeCount',
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-})
 
 export default Like;

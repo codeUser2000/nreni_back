@@ -1,6 +1,7 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../services/sequelize';
 import md5 from "md5";
+import Like from "./Like";
 
 class Products extends Model {
 
@@ -54,4 +55,17 @@ Products.init({
     tableName: 'products',
 });
 
+Like.belongsTo(Products, {
+    foreignKey: 'productId',
+    as: 'product',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+});
+
+Products.hasMany(Like, {
+    foreignKey: 'productId',
+    as: 'likeCount',
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+})
 export default Products;

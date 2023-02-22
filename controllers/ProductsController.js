@@ -231,27 +231,39 @@ class ProductsController {
 
 
             const product = await Products.findAll({
-                include: [{
-                    model: Categories,
-                    as: 'categories',
-                }, {
-                    model: Like,
-                    as: 'likeCount',
-                    attributes: [[sequelize.fn("COUNT", sequelize.col("productId")), "productLike"]],
-                    separate: true,
-                    group: ["id"],
-
-                },],
+                // attributes: ['*', [sequelize.fn('COUNT', sequelize.col('likeCount.productId')), 'lC']],
+                // include: [{
+                //     model: Like,
+                //     as: 'likeCount',
+                //     attributes: [],
+                    // attributes: [[sequelize.fn("COUNT", sequelize.col("productId")), "productLike"]],
+                    // separate: true,
+                    // group: ["productId", 'products.id'],
+                // },],
+                // group: '"products.id"',
+                // having: sequelize.where(sequelize.fn('COUNT', sequelize.col('likeCount.productId')), '>=', 1),
+                // group: ['id'],
+                // attributes: [
+                //     'products.id',
+                //     'products.title',
+                //     'products.newPrice',
+                //     'products.oldPrice',
+                //     'products.createdAt',
+                //     'products.avatar',
+                //     // [sequelize.fn('COUNT', sequelize.col('products.likeCount')), 'likes']
+                // ],
+                //
 
                 where: {
                     $and: [{newPrice: {$gte: +min}}, {newPrice: {$lte: +max}},],
                     ...whereOption, countProduct : {$gt: 0}
                 },
-                order: [['createdAt', 'desc']],
+                // order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
-                limit: +limit
+                limit: +limit,
             });
 
+            console.log(JSON.stringify(product,null, 2));
             const total = await Products.count({
                 where: {
                     $and: [
@@ -262,6 +274,15 @@ class ProductsController {
                 },
             });
 
+            product.map( async (product, index.count({
+                    where: {
+                        productId: product.id
+                    }
+                })
+
+                product.like = count;
+                return product
+            })
 
             res.json({
                 status: 'ok',
