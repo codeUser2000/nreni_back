@@ -75,12 +75,20 @@ class CartController {
 
     static deleteFromCart = async (req, res, next) => {
         try {
-            const {productId, cartId} = req.body;
+            const {productId} = req.body;
+
+            const {userId} = req
+
+            const cartId = await Cart.findOne({
+                where: {
+                    userId
+                }
+            });
 
             const cartItem = await CartItem.findOne({
                 where: {
                     id: productId,
-                    cartId
+                    cartId:cartId.id
                 }
             });
 
