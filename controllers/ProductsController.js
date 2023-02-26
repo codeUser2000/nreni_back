@@ -258,7 +258,7 @@ class ProductsController {
                     $and: [{newPrice: {$gte: +min}}, {newPrice: {$lte: +max}},],
                     ...whereOption, countProduct : {$gt: 0}
                 },
-                // order: [['createdAt', 'desc']],
+                order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
                 limit: +limit,
             });
