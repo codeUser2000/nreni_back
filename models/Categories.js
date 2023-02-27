@@ -23,13 +23,6 @@ Categories.init({
 });
 
 
-// (async () => {
-//     for (const category of categoryData){
-//         await Categories.create({type: category.type});
-//     }
-//
-// })()
-
 Products.belongsTo(Categories, {
     foreignKey: 'categoryId',
     as: 'categories',
