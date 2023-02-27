@@ -11,7 +11,7 @@ class UsersController {
     static register = async (req, res, next) => {
         try {
             const {
-                firstName, lastName, email, password,status,
+                firstName, lastName, email, password,status, isDevice = false,
                 redirectUrl = 'http://localhost:4000/users/confirm'
             } = req.body;
 
@@ -22,7 +22,7 @@ class UsersController {
             if (existUser) {
                 throw HttpError(401, "User exists")
             }
-            const confirmToken = uuidV4();
+            let confirmToken = uuidV4();
 
             if(status === "active"){
                 const u = await Users.create({
@@ -33,13 +33,20 @@ class UsersController {
                 })
 
             }else{
-                await Users.create({
-                    firstName, lastName, email, password, confirmToken,
-                });
-                await Email.sendActivationEmail(email, confirmToken, redirectUrl);
+                if (isDevice){
+                    confirmToken = Math.floor(100000 + Math.random() * 900000)
+                    await Users.create({
+                        firstName, lastName, email, password, confirmToken,
+                    });
+                    await Email.sendActivationEmailDevice(email, confirmToken);
+                }else{
+                    confirmToken = uuidV4();
+                    await Users.create({
+                        firstName, lastName, email, password, confirmToken,
+                    });
+                    await Email.sendActivationEmail(email, confirmToken, redirectUrl);
+                }
             }
-
-
 
             res.json({
                 status: 'ok',
@@ -52,15 +59,18 @@ class UsersController {
 
     static confirm = async (req, res, next) => {
         try {
-            const {email, token} = req.body;
+            const {email, token, isDevice=false} = req.body;
 
             const user = await Users.findOne({
                 where: {email}
             });
 
-            if (user.confirmToken !== token) {
+            if (isDevice && user.confirmToken !== token ){
+                throw HttpError(403);
+            }else if (user.confirmToken !== token) {
                 throw HttpError(403);
             }
+
 
             await Cart.create({
                 userId: user.id

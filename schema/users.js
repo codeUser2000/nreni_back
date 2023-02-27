@@ -8,6 +8,7 @@ export const usersRegisterSchema = Joi.object({
         phone: Joi.string().max(30).message('Invalid phone number!'),
         country: Joi.string().min(2).max(30).message('Invalid Country!'),
         city: Joi.string().min(3).max(30).message('Invalid city!'),
+        isDevice: Joi.boolean(),
         street: Joi.string().min(3).max(50).message('Invalid street!'),
         postal: Joi.string().min(4).max(6).regex(/^[\d]+$/i).message('Invalid Postal/Zip Code!'),
         email: Joi.string().email().trim().message('Invalid email address - must be within validation rules!'),

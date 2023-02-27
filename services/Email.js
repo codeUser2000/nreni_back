@@ -20,6 +20,14 @@ class Email {
             html: `<a href="${FRONT_URL}complete?email=${email}&token=${token}">Complete Registration</a>`
         })
     }
+    static sendActivationEmailDevice(email,code) {
+        return transporter.sendMail({
+            from: '"Nreni" <nreniShop@yandex.ru>',
+            to: email,
+            subject: 'Complete Registration',
+            html: `<p>Your code ${code}</p>`
+        })
+    }
     static sendDropPassword(email) {
         return transporter.sendMail({
             from: '"Nreni" <nreniShop@yandex.ru>',
@@ -29,7 +37,6 @@ class Email {
         })
     }
     static sendDropPasswordDevice(email, code) {
-        console.log(55)
         return transporter.sendMail({
             from: '"Nreni" <nreniShop@yandex.ru>',
             to: email,

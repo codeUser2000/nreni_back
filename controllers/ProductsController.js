@@ -231,32 +231,13 @@ class ProductsController {
 
 
             const product = await Products.findAll({
-                // attributes: ['*', [sequelize.fn('COUNT', sequelize.col('likeCount.productId')), 'lC']],
-                // include: [{
-                //     model: Like,
-                //     as: 'likeCount',
-                //     attributes: [],
-                    // attributes: [[sequelize.fn("COUNT", sequelize.col("productId")), "productLike"]],
-                    // separate: true,
-                    // group: ["productId", 'products.id'],
-                // },],
-                // group: '"products.id"',
-                // having: sequelize.where(sequelize.fn('COUNT', sequelize.col('likeCount.productId')), '>=', 1),
-                // group: ['id'],
-                // attributes: [
-                //     'products.id',
-                //     'products.title',
-                //     'products.newPrice',
-                //     'products.oldPrice',
-                //     'products.createdAt',
-                //     'products.avatar',
-                //     // [sequelize.fn('COUNT', sequelize.col('products.likeCount')), 'likes']
-                // ],
-                //
-
+                include: [{
+                    model: Categories,
+                    as: 'categories',
+                }],
                 where: {
                     $and: [{newPrice: {$gte: +min}}, {newPrice: {$lte: +max}},],
-                    ...whereOption, countProduct : {$gt: 0}
+                    ...whereOption
                 },
                 order: [['createdAt', 'desc']],
                 offset: (+page - 1) * +limit,
@@ -289,6 +270,7 @@ class ProductsController {
                 categories,
                 productPrice,
                 total,
+                page,
                 totalPages: Math.ceil(total / limit)
             });
 
