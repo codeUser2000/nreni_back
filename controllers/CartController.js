@@ -155,7 +155,7 @@ class CartController {
             })
 
             const total = await CartItem.count({
-                where: {cartId: cartId.id}
+                where: {cartId: cartId.id, status: 'unsold'}
             });
             res.json({
                 status: 'ok',

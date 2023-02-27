@@ -46,7 +46,6 @@ class PaymentController {
                     product: products[i]
                 })
             }
-            let c = []
 
             for (let i = 0; i < final.length; i++) {
                 if (+final[i].product.countProduct - final[i].quantity < 0) {
@@ -137,12 +136,16 @@ class PaymentController {
                 const cart = await Cart.findOne(
                     {where: {userId: customer.metadata.userId,}}
                 )
-                await CartItem.update({
-                        status: 'sold out'
-                    },
-                    {
-                        where: {cartId: cart.id, status: 'unsold'}
-                    })
+
+                for (let i = 0; i < final.length; i++) {
+                    await CartItem.update({
+                            status: 'sold out'
+                        },
+                        {
+                            where: {cartId: cart.id, productId: final[i].products.id, status: 'unsold'}
+                        })
+                }
+
             }
             // endpointSecretNara = "whsec_c1ba19188c7e68fe13d809d2fab77f72f66df54731bd3761d785e5e827e1fd74";
             // endpointSecretAida = "whsec_c92f802ba1c75864d7fc7182b2b1c7c9891d53c2407a66c91dfca308b35b2efd";
