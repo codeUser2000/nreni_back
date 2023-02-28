@@ -6,7 +6,6 @@
 import app from "../app";
 import Debug from "debug";
 import http from "http";
-import Socket from "../services/Socket";
 
 const debug = Debug('nreni-back:server');
 /**
@@ -19,7 +18,6 @@ app.set('port', port);
  * Create HTTP server.
  */
 const server = http.createServer(app);
-Socket.init(server);
 
 /**
  * Listen on provided port, on all network interfaces.
