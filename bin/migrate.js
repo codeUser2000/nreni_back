@@ -9,6 +9,9 @@ async function main() {
         await Categories.create({type: category.type});
     }
 
+    const jane = Users.build({ firstName: "Admin", lastName: "Admin", email: "admin@admin.com",phone: '0100011000', birthYear:"2002-12-31", password: 'hello', admin: 'true', status:'active' });
+    await jane.save();
+
     process.exit();
 }
 

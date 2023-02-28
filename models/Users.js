@@ -84,10 +84,7 @@ Users.init({
     tableName: 'users'
 });
 
-(async () => {
-    const jane = Users.build({ firstName: "Admin", lastName: "Admin", email: "admin@admin.com",phone: '0100011000', birthYear:"2002-12-31", password: 'hello', admin: 'true' });
-    await jane.save();
-})()
+
 Cart.belongsTo(Users, {
     foreignKey: 'userId',
     as: 'user',
