@@ -183,12 +183,11 @@ class ProductsController {
     static getProducts = async (req, res, next) => {
         try {
             const {
-                lang = 'en',
                 filter = '',
                 min = 0,
                 max = 9999999999,
                 page = 1,
-                limit = 9,
+                limit = 12,
                 searchText = '',
             } = req.query;
 
