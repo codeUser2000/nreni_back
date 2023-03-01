@@ -200,9 +200,6 @@ class UsersController {
                 where: {email}
             });
 
-            if (!user || user.getDataValue('password') !== Users.passwordHash(password)) {
-                throw HttpError(403, "Password or login is wrong");
-            }
 
             if (user.status === "pending") {
                 throw HttpError(403, "You haven't confirmed your account");
@@ -210,6 +207,10 @@ class UsersController {
 
             if (user.status === "deleted") {
                 throw HttpError(403, "You are blocked");
+            }
+
+            if (!user || user.getDataValue('password') !== Users.passwordHash(password)) {
+                throw HttpError(403, "Password or login is wrong");
             }
             const token = jwt.sign({userId: user.id}, JWT_SECRET);
 
