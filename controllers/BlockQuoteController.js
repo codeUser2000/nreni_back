@@ -96,7 +96,6 @@ class BlockQuoteController {
     static setBlockquoteView = async (req, res, next) => {
         try {
             const {id, ev} = req.body;
-            console.log(ev === 'allowed')
             if(ev === 'allowed'){
                 await Blockquote.update(
                     {view: "not allowed"},

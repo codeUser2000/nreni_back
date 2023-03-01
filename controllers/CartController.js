@@ -38,7 +38,7 @@ class CartController {
 
 
             if (existProduct) {
-                console.log('if')
+                ('if')
 
                 if (+existProduct.quantity + +quantity > +product.countProduct) {
                     throw HttpError(403, 'There is no such count of this product');
@@ -54,7 +54,6 @@ class CartController {
                     }
                 )
             } else {
-                console.log('else')
                 const cart = await Cart.findOne({
                     where: {userId}
                 })
@@ -206,7 +205,6 @@ class CartController {
                 for (let i = 0; i < cartItem.length; i++) {
                     for (let j = 0; j < data.length; j++) {
                         if (cartItem[i].productId === data[j].product.id) {
-                            console.log(6789)
                             await CartItem.update(
                                 {
                                     quantity: +cartItem[i].quantity + +data[j].quantity,

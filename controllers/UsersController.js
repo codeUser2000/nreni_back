@@ -163,7 +163,7 @@ class UsersController {
     static forgetPass = async (req, res, next) => {
         try {
             const {email, isDevice = false} = req.body;
-            console.log(req.body,233)
+            (req.body,233)
             const user = await Users.findOne({
                 where: {email}
             });

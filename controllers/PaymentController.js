@@ -52,10 +52,8 @@ class PaymentController {
                     throw HttpError(403, `${final[i].product.title} has already been bought`)
                 }
             }
-            console.log(products, 'check')
 
             let line_items = final.map((data) => {
-                console.log(data)
                 return {
                     price_data: {
                         currency: 'usd',
@@ -102,7 +100,6 @@ class PaymentController {
                 const products = await Products.findAll({
                     where: {id: productId}
                 })
-                console.log(products, 'web')
 
                 for (let i = 0; i < products.length; i++) {
                     for (let j = 0; j < products.length; j++) {

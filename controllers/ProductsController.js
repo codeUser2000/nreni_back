@@ -243,7 +243,6 @@ class ProductsController {
                 limit: +limit,
             });
 
-            console.log(JSON.stringify(product,null, 2));
             const total = await Products.count({
                 where: {
                     $and: [
